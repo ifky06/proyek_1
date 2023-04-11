@@ -14,6 +14,5 @@ class TransaksiMasuk extends Model
         'qty',
         'grand_total',
         'id_pemasok',
-        'created_at',
     ];
 }
