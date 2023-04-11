@@ -1,0 +1,18 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Transaksi_Keluar extends Model
+{
+    use HasFactory;
+    protected $table = 'transaksi_masuk';
+    protected $fillable = [
+        'id_barang',
+        'qty',
+        'grand_total',
+        'id_users',
+    ];
+}
