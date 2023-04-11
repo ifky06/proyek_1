@@ -15,11 +15,11 @@ return new class extends Migration
     {
         Schema::create('transaksi_masuk', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('id_barang');
-            $table->integer('qty');
-            $table->float('grand_total');
-            $table->bigInteger('id_pemasok');
-            $table->date('created_at');
+            $table->bigInteger('id_barang')->nullable();
+            $table->integer('qty')->nullable();
+            $table->float('grand_total')->nullable();
+            $table->bigInteger('id_pemasok')->nullable();
+            $table->date('created_at')->nullable();
             $table->timestamps();
         });
     }
