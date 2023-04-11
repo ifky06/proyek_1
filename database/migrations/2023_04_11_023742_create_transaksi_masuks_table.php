@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('qty')->nullable();
             $table->float('grand_total')->nullable();
             $table->bigInteger('id_pemasok')->nullable();
-            $table->date('created_at')->nullable();
+            // $table->date('created_at')->nullable();
             $table->timestamps();
         });
     }
