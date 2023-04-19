@@ -28,7 +28,9 @@ return new class extends Migration
     public function down()
     {
         Schema::table('barang', function (Blueprint $table) {
-            //
+            $table->dropForeign(['id_kategori']);
+            $table->dropForeign(['id_pemasok']);
+            $table->dropForeign(['id_satuan']);
         });
     }
 };
