@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::table('detail_transaksi_keluar', function (Blueprint $table) {
             $table->foreign('id_barang')->references('id')->on('barang');
-            $table->foreign('id_transaksi')->references('id')->on('transaksi__keluar');
+            $table->foreign('id_transaksi')->references('id')->on('transaksi_keluar');
         });
     }
 

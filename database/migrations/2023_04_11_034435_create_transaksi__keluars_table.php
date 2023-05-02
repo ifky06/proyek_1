@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('transaksi__keluar', function (Blueprint $table) {
+        Schema::create('transaksi_keluar', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('id_barang')->unsigned();
             $table->integer('qty')->nullable();
