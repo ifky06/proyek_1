@@ -14,7 +14,9 @@ class KategoriController extends Controller
      */
     public function index()
     {
-        //
+        $data=Kategori::all();
+        return view('kategori.kategori')
+            ->with('data',$data);
     }
 
     /**
