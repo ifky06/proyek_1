@@ -14,7 +14,9 @@ class PemasokController extends Controller
      */
     public function index()
     {
-        //
+        $data=Pemasok::all();
+        return view('pemasok.pemasok')
+            ->with('data',$data);
     }
 
     /**
