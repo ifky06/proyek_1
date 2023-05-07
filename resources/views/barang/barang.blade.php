@@ -28,7 +28,7 @@
             </div>
             <div class="card-body">
 
-                <table id="example1" class="table table-bordered table-striped">
+                <table id="example2" class="table table-bordered table-striped">
                     <thead>
                     <tr>
                         <th>Nama</th>
@@ -49,6 +49,13 @@
                             <td>{{$row->satuan->satuan}}</td>
                             <td>{{$row->harga}}</td>
                             <td>{{$row->stok}}</td>
+                            <td>
+                                <a href="{{route('barang.edit', $row->id)}}" class="btn btn-primary btn-sm">Edit</a>
+                                <form action="{{route('barang.destroy', $row->id)}}" method="post" class="d-inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-danger btn-sm" onclick="return confirm('Apakah anda yakin?')">Delete</button>
+                                </form>
                         </tr>
                     @endforeach
                     </tbody>
