@@ -32,6 +32,9 @@
                     <thead>
                     <tr>
                         <th>Nama</th>
+                        <th>Kategori</th>
+                        <th>Pemasok</th>
+                        <th>Satuan</th>
                         <th>Harga</th>
                         <th>Stok</th>
                         <th>Action</th>
@@ -41,6 +44,9 @@
                     @foreach($data as $row)
                         <tr>
                             <td>{{$row->nama}}</td>
+                            <td>{{$row->kategori->nama}}</td>
+                            <td>{{$row->pemasok->nama}}</td>
+                            <td>{{$row->satuan->satuan}}</td>
                             <td>{{$row->harga}}</td>
                             <td>{{$row->stok}}</td>
                         </tr>
