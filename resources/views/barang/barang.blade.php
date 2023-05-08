@@ -23,12 +23,18 @@
 
         <!-- Default box -->
         <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">Title</h3>
-            </div>
             <div class="card-body">
-
-                <table id="example2" class="table table-bordered table-striped">
+                <a href="{{url('barang/create')}}" class="btn btn-sm btn-success my-2">Tambah Data</a>
+                <form action="{{url('barang')}}" method="get">
+                    <div class="input-group mb-3 w-25">
+                        <input type="text" name="search" class="form-control" placeholder="Search"
+                               value="{{request()->search}}">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="submit">Search</button>
+                        </div>
+                    </div>
+                </form>
+                <table class="table table-bordered table-striped mb-3">
                     <thead>
                     <tr>
                         <th>Nama</th>
@@ -60,6 +66,7 @@
                     @endforeach
                     </tbody>
                 </table>
+                {{ $data->links() }}
             </div>
         </div>
         <!-- /.card -->

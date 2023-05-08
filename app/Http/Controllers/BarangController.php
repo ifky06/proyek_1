@@ -15,9 +15,17 @@ class BarangController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data=Barang::all();
+        if ($request->has('search')){
+            $data=Barang::where('nama','like',"%{$request->search}%")
+                ->orWhere('harga','like',"%{$request->search}%")
+                ->orWhere('stok','like',"%{$request->search}%")
+                ->paginate(5);
+            return view('barang.barang')
+                ->with('data',$data);
+        }
+        $data=Barang::paginate(5);
         return view('barang.barang')
             ->with('data',$data);
     }
