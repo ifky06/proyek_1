@@ -45,7 +45,7 @@ class PemasokSeeder extends Seeder
                 'nama' => 'PT Tirta Investama',
                 'alamat' => 'Jalan Raya Surabaya-Malang, KM 28,5, Pandaan, Pasuruan',
                 'no_tlp' => '0843633022'
-            ],
+            ]
         ]);
 
     }
