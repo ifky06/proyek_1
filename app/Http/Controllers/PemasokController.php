@@ -12,9 +12,17 @@ class PemasokController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data=Pemasok::all();
+        if ($request->has('search')){
+            $data=Pemasok::where('nama','like',"%{$request->search}%")
+                ->orWhere('alamat','like',"%{$request->search}%")
+                ->orWhere('no_tlp','like',"%{$request->search}%")
+                ->paginate(5);
+            return view('pemasok.pemasok')
+                ->with('data',$data);
+        }
+        $data=Pemasok::paginate(5);
         return view('pemasok.pemasok')
             ->with('data',$data);
     }
@@ -26,7 +34,8 @@ class PemasokController extends Controller
      */
     public function create()
     {
-        //
+        return view('pemasok.create_pemasok')
+            ->with('url_form',url('pemasok'));
     }
 
     /**
@@ -37,7 +46,14 @@ class PemasokController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nama'=>'required',
+            'alamat'=>'required',
+            'no_tlp'=>'required',
+    ]);
+    Pemasok::create($request->all());
+    return redirect('pemasok')
+        ->with('success','Data pemasok berhasil ditambahkan');
     }
 
     /**
@@ -59,7 +75,9 @@ class PemasokController extends Controller
      */
     public function edit(Pemasok $pemasok)
     {
-        //
+        return view('pemasok.create_pemasok')
+            ->with('url_form', url('pemasok/' . $pemasok->id))
+            ->with('data', $pemasok);
     }
 
     /**
@@ -71,7 +89,14 @@ class PemasokController extends Controller
      */
     public function update(Request $request, Pemasok $pemasok)
     {
-        //
+        $request->validate([
+            'nama'=>'required',
+            'alamat'=>'required',
+            'no_tlp'=>'required',
+        ]);
+        $pemasok->update($request->all());
+        return redirect('pemasok')
+            ->with('success', 'Data pemasok berhasil diubah');
     }
 
     /**
@@ -82,6 +107,8 @@ class PemasokController extends Controller
      */
     public function destroy(Pemasok $pemasok)
     {
-        //
+        $pemasok->delete();
+        return redirect('pemasok')
+            ->with('success', 'Data pemasok berhasil dihapus');
     }
 }

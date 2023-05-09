@@ -27,7 +27,16 @@
                 <h3 class="card-title">Pemasok</h3>
             </div>
             <div class="card-body">
-
+                <a href="{{url('pemasok/create')}}" class="btn btn-sm btn-success my-2">Tambah Data</a>
+                <form action="{{url('pemasok')}}" method="get">
+                    <div class="input-group mb-3 w-25">
+                        <input type="text" name="search" class="form-control" placeholder="Search"
+                               value="{{request()->search}}">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="submit">Search</button>
+                        </div>
+                    </div>
+                </form>
                 <table id="example1" class="table table-bordered table-striped">
                     <thead>
                     <tr>
@@ -43,10 +52,18 @@
                             <td>{{$row->nama}}</td>
                             <td>{{$row->alamat}}</td>
                             <td>{{$row->no_tlp}}</td>
+                            <td>
+                                <a href="{{route('pemasok.edit', $row->id)}}" class="btn btn-primary btn-sm">Edit</a>
+                                <form action="{{route('pemasok.destroy', $row->id)}}" method="post" class="d-inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-danger btn-sm" onclick="return confirm('Apakah anda yakin?')">Delete</button>
+                                </form></td>
                         </tr>
                     @endforeach
                     </tbody>
                 </table>
+                {{ $data->links() }}
             </div>
         </div>
         <!-- /.card -->
