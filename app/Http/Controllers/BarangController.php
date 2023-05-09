@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Barang;
+use App\Models\Kategori;
+use App\Models\Pemasok;
+use App\Models\Satuan;
 use Illuminate\Http\Request;
 
 class BarangController extends Controller
@@ -12,9 +15,17 @@ class BarangController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data=Barang::all();
+        if ($request->has('search')){
+            $data=Barang::where('nama','like',"%{$request->search}%")
+                ->orWhere('harga','like',"%{$request->search}%")
+                ->orWhere('stok','like',"%{$request->search}%")
+                ->paginate(5);
+            return view('barang.barang')
+                ->with('data',$data);
+        }
+        $data=Barang::paginate(5);
         return view('barang.barang')
             ->with('data',$data);
     }
@@ -26,7 +37,14 @@ class BarangController extends Controller
      */
     public function create()
     {
-        //
+        $kategori=Kategori::all();
+        $pemasok=Pemasok::all();
+        $satuan=Satuan::all();
+        return view('barang.create_barang')
+            ->with('url_form',url('barang'))
+            ->with('kategori',$kategori)
+            ->with('pemasok',$pemasok)
+            ->with('satuan',$satuan);
     }
 
     /**
@@ -37,7 +55,14 @@ class BarangController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+                'nama'=>'required',
+                'harga'=>'required|numeric',
+                'stok'=>'required|numeric',
+        ]);
+        Barang::create($request->all());
+        return redirect('barang')
+            ->with('success','Data barang berhasil ditambahkan');
     }
 
     /**
@@ -59,7 +84,16 @@ class BarangController extends Controller
      */
     public function edit(Barang $barang)
     {
-        //
+
+        $kategori = Kategori::all();
+        $pemasok = Pemasok::all();
+        $satuan = Satuan::all();
+        return view('barang.create_barang')
+            ->with('url_form', url('barang/' . $barang->id))
+            ->with('kategori', $kategori)
+            ->with('pemasok', $pemasok)
+            ->with('satuan', $satuan)
+            ->with('data', $barang);
     }
 
     /**
@@ -71,7 +105,14 @@ class BarangController extends Controller
      */
     public function update(Request $request, Barang $barang)
     {
-        //
+        $request->validate([
+            'nama' => 'required',
+            'harga' => 'required|numeric',
+            'stok' => 'required|numeric',
+        ]);
+        $barang->update($request->all());
+        return redirect('barang')
+            ->with('success', 'Data barang berhasil diubah');
     }
 
     /**
@@ -82,6 +123,9 @@ class BarangController extends Controller
      */
     public function destroy(Barang $barang)
     {
-        //
+
+        $barang->delete();
+        return redirect('barang')
+            ->with('success', 'Data barang berhasil dihapus');
     }
 }

@@ -12,9 +12,17 @@ class SatuanController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if ($request->has('search')){
+            $data=Satuan::where('satuan','like',"%{$request->search}%")
+                ->paginate(5);
+            return view('satuan.satuan')
+                ->with('data',$data);
+        }
+        $data=Satuan::paginate(5);
+        return view('satuan.satuan')
+            ->with('data',$data);
     }
 
     /**
@@ -24,7 +32,10 @@ class SatuanController extends Controller
      */
     public function create()
     {
-        //
+        $satuan=Satuan::all();
+        return view('satuan.create_satuan')
+            ->with('url_form',url('satuan'))
+            ->with('satuan',$satuan);
     }
 
     /**
@@ -35,7 +46,12 @@ class SatuanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'satuan'=>'required',
+        ]);
+        Satuan::create($request->all());
+        return redirect('satuan')
+            ->with('success','Data barang berhasil ditambahkan');
     }
 
     /**
@@ -57,7 +73,9 @@ class SatuanController extends Controller
      */
     public function edit(Satuan $satuan)
     {
-        //
+        return view('satuan.create_satuan')
+            ->with('url_form', url('satuan/' . $satuan->id))
+            ->with('data', $satuan);
     }
 
     /**
@@ -69,7 +87,12 @@ class SatuanController extends Controller
      */
     public function update(Request $request, Satuan $satuan)
     {
-        //
+        $request->validate([
+            'satuan'=>'required',
+        ]);
+        $satuan->update($request->all());
+        return redirect('satuan')
+            ->with('success', 'Data barang berhasil diubah');
     }
 
     /**
@@ -80,6 +103,8 @@ class SatuanController extends Controller
      */
     public function destroy(Satuan $satuan)
     {
-        //
+        $satuan->delete();
+        return redirect('satuan')
+            ->with('success', 'Data barang berhasil dihapus');
     }
 }

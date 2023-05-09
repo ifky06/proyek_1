@@ -10,4 +10,9 @@ class Satuan extends Model
     use HasFactory;
     protected $table = 'satuan';
     protected $fillable = ['satuan'];
+
+    public function barang()
+    {
+        return $this->hasMany(Barang::class);
+    }
 }
