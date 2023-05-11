@@ -11,9 +11,14 @@
   <link rel="stylesheet" href="{{asset('/assets/plugins/fontawesome-free/css/all.min.css')}}">
   <!-- Theme style -->
   <link rel="stylesheet" href="{{asset('assets/dist/css/adminlte.min.css')}}">
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="{{asset('/assets/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css')}}">
+  @stack('css')
     <!-- jQuery -->
     <script src="{{ asset('/assets/plugins/jquery/jquery.min.js') }}"></script>
-  @stack('css')
+
+    <!-- SweetAlert2 -->
+    <script src="{{asset('/assets/plugins/sweetalert2/sweetalert2.min.js')}}"></script>
 </head>
 <body class="hold-transition sidebar-mini">
 <!-- Site wrapper -->
