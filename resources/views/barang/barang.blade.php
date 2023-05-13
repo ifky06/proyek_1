@@ -47,6 +47,7 @@
                 <table class="table table-bordered table-striped mb-3">
                     <thead>
                     <tr>
+                        <th>Kode</th>
                         <th>Nama</th>
                         <th>Kategori</th>
                         <th>Pemasok</th>
@@ -59,7 +60,8 @@
                     <tbody>
                     @foreach($data as $row)
                         <tr>
-                            <input type="hidden" class="name" value="{{$row->nama}}">
+                            <input type="hidden" class="code" value="{{$row->kode}}">
+                            <td>{{$row->kode}}</td>
                             <td>{{$row->nama}}</td>
                             <td>{{$row->kategori->nama}}</td>
                             <td>{{$row->pemasok->nama}}</td>
@@ -95,10 +97,10 @@
 {{--    add delete confirmation alert--}}
         <script>
             $('.delete').submit(function () {
-                var name = $(this).closest('tr').find('.name').val();
+                var code = $(this).closest('tr').find('.code').val();
                 Swal.fire({
                     title: 'Apakah anda yakin?',
-                    text: "Setelah dihapus, Anda tidak dapat memulihkan Data Barang "+ name +" ini lagi!",
+                    text: "Setelah dihapus, Anda tidak dapat memulihkan Data Barang "+ code +" ini lagi!",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6', // blue

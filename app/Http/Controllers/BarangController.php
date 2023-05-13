@@ -18,7 +18,8 @@ class BarangController extends Controller
     public function index(Request $request)
     {
         if ($request->has('search')){
-            $data=Barang::where('nama','like',"%{$request->search}%")
+            $data=Barang::where('kode','like',"%{$request->search}%")
+                ->orWhere('nama','like',"%{$request->search}%")
                 ->orWhere('harga','like',"%{$request->search}%")
                 ->orWhere('stok','like',"%{$request->search}%")
                 ->paginate(5);
@@ -55,10 +56,14 @@ class BarangController extends Controller
      */
     public function store(Request $request)
     {
+
         $request->validate([
                 'nama'=>'required',
                 'harga'=>'required|numeric',
                 'stok'=>'required|numeric',
+        ]);
+        $request->merge([
+            'kode'=>Barang::generateKode($request->nama)
         ]);
         Barang::create($request->all());
         return redirect('barang')

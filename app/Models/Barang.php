@@ -9,7 +9,13 @@ class Barang extends Model
 {
     use HasFactory;
     protected $table = 'barang';
-    protected $fillable = ['id_kategori', 'id_pemasok', 'id_satuan', 'nama', 'harga', 'stok'];
+    protected $fillable = ['kode','id_kategori', 'id_pemasok', 'id_satuan', 'nama', 'harga', 'stok'];
+
+    public static function generateKode($name): string
+    {
+        $order = self::where('nama', $name)->count() + 1;
+        return strtoupper(substr($name, 0, 3)) . sprintf('%03d', $order);
+    }
 
     public function kategori()
     {
