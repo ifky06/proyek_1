@@ -15,7 +15,8 @@ class PemasokController extends Controller
     public function index(Request $request)
     {
         if ($request->has('search')){
-            $data=Pemasok::where('nama','like',"%{$request->search}%")
+            $data=Pemasok::where('kode','like',"%{$request->search}%")
+                ->orWhere('nama','like',"%{$request->search}%")
                 ->orWhere('alamat','like',"%{$request->search}%")
                 ->orWhere('no_tlp','like',"%{$request->search}%")
                 ->paginate(5);
@@ -50,7 +51,11 @@ class PemasokController extends Controller
             'nama'=>'required',
             'alamat'=>'required',
             'no_tlp'=>'required',
-    ]);
+        ]);
+        $request->merge([
+            'kode'=>Pemasok::generateKode($request->nama)
+        ]);
+
     Pemasok::create($request->all());
     return redirect('pemasok')
         ->with('success','Data pemasok berhasil ditambahkan');

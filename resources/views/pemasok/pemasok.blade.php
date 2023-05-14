@@ -40,6 +40,7 @@
                 <table id="example1" class="table table-bordered table-striped">
                     <thead>
                     <tr>
+                        <th>Kode</th>
                         <th>Nama</th>
                         <th>Alamat</th>
                         <th>No.Telp</th>
@@ -49,6 +50,8 @@
                     <tbody>
                     @foreach($data as $row)
                         <tr>
+                            <input type="hidden" class="code" value="{{$row->kode}}">
+                            <td>{{$row->kode}}</td>
                             <td>{{$row->nama}}</td>
                             <td>{{$row->alamat}}</td>
                             <td>{{$row->no_tlp}}</td>
