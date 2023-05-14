@@ -2,6 +2,16 @@
 
 @section('content')
 
+{{--    add sweetalert2 message--}}
+    @if(session('success'))
+        <script>
+            Swal.fire(
+                'Success!',
+                '{{session('success')}}',
+                'success'
+            )
+        </script>
+    @endif
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -37,6 +47,7 @@
                 <table class="table table-bordered table-striped mb-3">
                     <thead>
                     <tr>
+                        <th>Kode</th>
                         <th>Nama</th>
                         <th>Kategori</th>
                         <th>Pemasok</th>
@@ -49,6 +60,8 @@
                     <tbody>
                     @foreach($data as $row)
                         <tr>
+                            <input type="hidden" class="code" value="{{$row->kode}}">
+                            <td>{{$row->kode}}</td>
                             <td>{{$row->nama}}</td>
                             <td>{{$row->kategori->nama}}</td>
                             <td>{{$row->pemasok->nama}}</td>
@@ -57,10 +70,10 @@
                             <td>{{$row->stok}}</td>
                             <td>
                                 <a href="{{route('barang.edit', $row->id)}}" class="btn btn-primary btn-sm">Edit</a>
-                                <form action="{{route('barang.destroy', $row->id)}}" method="post" class="d-inline">
+                                <form action="{{route('barang.destroy', $row->id)}}" method="post" class="delete d-inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="btn btn-danger btn-sm" onclick="return confirm('Apakah anda yakin?')">Delete</button>
+                                    <button class="btn btn-danger btn-sm">Delete</button>
                                 </form>
                         </tr>
                     @endforeach
@@ -72,6 +85,8 @@
         <!-- /.card -->
 
     </section>
+
+
 @endsection
 
 @push('css')
@@ -79,9 +94,25 @@
 @endpush
 
 @push('scripts')
-
-    {{--    <script>--}}
-    {{--        alert('Selamat Datang');--}}
-    {{--    </script>--}}
+{{--    add delete confirmation alert--}}
+        <script>
+            $('.delete').submit(function () {
+                var code = $(this).closest('tr').find('.code').val();
+                Swal.fire({
+                    title: 'Apakah anda yakin?',
+                    text: "Setelah dihapus, Anda tidak dapat memulihkan Data Barang "+ code +" ini lagi!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6', // blue
+                    cancelButtonColor: '#d33', // red
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.submit();
+                    }
+                })
+                return false;
+            });
+        </script>
 
 @endpush

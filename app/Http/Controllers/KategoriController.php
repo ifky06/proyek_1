@@ -12,9 +12,17 @@ class KategoriController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if ($request->has('search')){
+            $data=Kategori::where('nama','like',"%{$request->search}%")
+                ->paginate(5);
+            return view('kategori.kategori')
+                ->with('data',$data);
+        }
+        $data=Kategori::paginate(5);
+        return view('kategori.kategori')
+            ->with('data',$data);
     }
 
     /**
@@ -24,7 +32,8 @@ class KategoriController extends Controller
      */
     public function create()
     {
-        //
+        return view('kategori.create_kategori')
+            ->with('url_form',url('kategori'));
     }
 
     /**
@@ -35,7 +44,13 @@ class KategoriController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nama'=>'required',
+
+        ]);
+        Kategori::create($request->all());
+            return redirect('kategori')
+            ->with('success','Data kategori berhasil ditambahkan');
     }
 
     /**
@@ -57,7 +72,9 @@ class KategoriController extends Controller
      */
     public function edit(Kategori $kategori)
     {
-        //
+        return view('kategori.create_kategori')
+            ->with('url_form', url('kategori/' . $kategori->id))
+            ->with('data', $kategori);
     }
 
     /**
@@ -69,7 +86,13 @@ class KategoriController extends Controller
      */
     public function update(Request $request, Kategori $kategori)
     {
-        //
+        $request->validate([
+            'nama' => 'required',
+           
+        ]);
+        $kategori->update($request->all());
+        return redirect('kategori')
+            ->with('success', 'Data barang berhasil diubah');
     }
 
     /**
@@ -80,6 +103,8 @@ class KategoriController extends Controller
      */
     public function destroy(Kategori $kategori)
     {
-        //
+        $kategori->delete();
+        return redirect('kategori')
+            ->with('success', 'Data barang berhasil dihapus');
     }
 }
