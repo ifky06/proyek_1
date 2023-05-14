@@ -13,13 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('transaksi_keluar', function (Blueprint $table) {
-            $table->id();
-            $table->bigInteger('id_barang')->unsigned();
-            $table->integer('qty')->nullable();
-            $table->float('grand_total')->nullable();
-            $table->bigInteger('id_users')->unsigned();
-            $table->timestamps();
+        Schema::table('satuan', function (Blueprint $table) {
+            $table->string('kode')->after('id')->unique()->nullable();
         });
     }
 
@@ -30,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('transaksi_keluar');
+        Schema::table('satuan', function (Blueprint $table) {
+            $table->dropColumn('kode');
+        });
     }
 };

@@ -16,6 +16,7 @@ class SatuanController extends Controller
     {
         if ($request->has('search')){
             $data=Satuan::where('satuan','like',"%{$request->search}%")
+            ->orWhere('kode','like',"%{$request->search}%")
                 ->paginate(5);
             return view('satuan.satuan')
                 ->with('data',$data);
@@ -48,6 +49,9 @@ class SatuanController extends Controller
     {
         $request->validate([
             'satuan'=>'required',
+        ]);
+        $request->merge([
+            'kode'=>Satuan::generateKode($request->satuan)
         ]);
         Satuan::create($request->all());
         return redirect('satuan')
