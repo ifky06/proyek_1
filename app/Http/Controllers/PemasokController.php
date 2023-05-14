@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pemasok;
+use App\Models\Riwayat;
 use Illuminate\Http\Request;
 
 class PemasokController extends Controller
 {
+    protected string $location = 'barang';
     /**
      * Display a listing of the resource.
      *
@@ -57,6 +59,9 @@ class PemasokController extends Controller
         ]);
 
     Pemasok::create($request->all());
+
+    Riwayat::add('store', $this->location, $request->kode);
+
     return redirect('pemasok')
         ->with('success','Data pemasok berhasil ditambahkan');
     }
@@ -100,6 +105,9 @@ class PemasokController extends Controller
             'no_tlp'=>'required',
         ]);
         $pemasok->update($request->all());
+
+        Riwayat::add('update', $this->location, $pemasok->kode);
+
         return redirect('pemasok')
             ->with('success', 'Data pemasok berhasil diubah');
     }
@@ -113,6 +121,9 @@ class PemasokController extends Controller
     public function destroy(Pemasok $pemasok)
     {
         $pemasok->delete();
+
+        Riwayat::add('delete', $this->location, $pemasok->kode);
+
         return redirect('pemasok')
             ->with('success', 'Data pemasok berhasil dihapus');
     }

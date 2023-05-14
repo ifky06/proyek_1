@@ -45,7 +45,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ url('/') }}" class="nav-link">
+                    <a href="{{ url('/pemasok') }}" class="nav-link">
                         <i class="nav-icon fas fa-solid fa-users"></i>
                         <p>
                             Pemasok
