@@ -145,4 +145,10 @@ class BarangController extends Controller
         return redirect('barang')
             ->with('success', 'Data barang berhasil dihapus');
     }
+
+    public function kasir(){
+        $data=Barang::all();
+        return view('kasir')
+            ->with('data',$data);
+    }
 }

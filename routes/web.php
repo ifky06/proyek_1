@@ -25,3 +25,5 @@ Route::resource('barang', BarangController::class);
 Route::resource('pemasok', PemasokController::class);
 Route::resource('kategori',KategoriController::class);
 Route::resource('satuan', SatuanController::class);
+
+Route::get('kasir', [BarangController::class, 'kasir']);
