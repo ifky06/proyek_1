@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 class KategoriController extends Controller
 {
+    protected string $location = 'barang';
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +16,8 @@ class KategoriController extends Controller
     public function index(Request $request)
     {
         if ($request->has('search')){
-            $data=Kategori::where('nama','like',"%{$request->search}%")
+            $data=Kategori::wherea('kode','like',"%{$request->search}%")
+                ->orWhere('nama','like',"%{$request->search}%")
                 ->paginate(5);
             return view('kategori.kategori')
                 ->with('data',$data);
@@ -47,6 +49,9 @@ class KategoriController extends Controller
         $request->validate([
             'nama'=>'required',
 
+        ]);
+        $request->merge([
+            'kode'=>Kategori::generateKode($request->nama)
         ]);
         Kategori::create($request->all());
             return redirect('kategori')
