@@ -6,6 +6,7 @@ use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\RiwayatController;
 use App\Http\Controllers\SatuanController;
 use App\Http\Controllers\TransaksiKeluarController;
+use App\Http\Controllers\TransaksiMasukController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,4 +29,5 @@ Route::resource('pemasok', PemasokController::class);
 Route::resource('kategori',KategoriController::class);
 Route::resource('satuan', SatuanController::class);
 Route::resource('kasir', TransaksiKeluarController::class);
+Route::resource('transaksimasuk', TransaksiMasukController::class);
 Route::resource('riwayat', RiwayatController::class);

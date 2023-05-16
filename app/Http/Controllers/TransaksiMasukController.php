@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Barang;
+use App\Models\DetailTransaksiMasuk;
 use App\Models\TransaksiMasuk;
 use Illuminate\Http\Request;
 
@@ -14,7 +16,9 @@ class TransaksiMasukController extends Controller
      */
     public function index()
     {
-        //
+        $data=Barang::all();
+        return view('transaksi')
+            ->with('data',$data);
     }
 
     /**
@@ -35,7 +39,29 @@ class TransaksiMasukController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->input('data' )['item'];
+        $payment = $request->input('data')['qty'];
+
+
+        TransaksiMasuk::create([
+            'qty' => $payment['qty'],
+        ]);
+
+        $transaksi_id = TransaksiMasuk::latest()->first()->id;
+
+        foreach ($data as $item) {
+            DetailTransaksiMasuk::create([
+                'id_transaksi' => $transaksi_id,
+                'id_barang' => $item['id'],
+                'qty' => $item['qty'],
+            ]);
+
+            $barang = Barang::find($item['id']);
+            $barang->stok = $barang->stok + $item['qty'];
+            $barang->save();
+        }
+
+        return response()->json(['success' => true, 'message' => 'Transaksi berhasil',]);
     }
 
     /**
