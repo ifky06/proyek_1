@@ -53,7 +53,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ url('/') }}" class="nav-link">
+                    <a href="{{ url('/kategori') }}" class="nav-link">
                         <i class="nav-icon fas fa-bars"></i>
                         <p>
                             Kategori Barang
