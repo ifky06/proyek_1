@@ -15,6 +15,5 @@ class Detail_transaksi_keluar extends Model
         'qty',
         'harga',
         'grandtotal',
-        'id_users'
     ];
 }

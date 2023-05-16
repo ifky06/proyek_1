@@ -30,8 +30,11 @@
                                value="">
                         <input id="value" type="text" class="form-control" placeholder="Jumlah"
                                value="">
+                        <input id="totalqty" type="hidden" class="form-control" placeholder="Jumlah"
+                               value="0">
                         <div class="input-group-append">
                             <button id="add" class="btn btn-primary">Add</button>
+                            <button id="payingForm" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">Pay</button>
                         </div>
                     </div>
                     <div class="input-group text-right">
@@ -53,15 +56,49 @@
 
                     </tbody>
                 </table>
-{{--                <div class="input-group mb-3 w-50">--}}
-{{--                    <input id="total" type="text" class="form-control w-50" placeholder="Total"--}}
-{{--                           value="">--}}
-{{--                    <div class="input-group-append">--}}
-{{--                        <button id="bayar" class="btn btn-primary" >Bayar</button>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
             </div>
         </div>
+
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Bayar</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="input-group mb-3 flex-nowrap">
+                            <div class="input-group-prepend w-25">
+                                <span class="input-group-text w-100" id="addon-wrapping">Total</span>
+                            </div>
+                            <input id="totalInput" type="number" class="form-control w-50" disabled placeholder="Nominal Pembayaran"
+                                   value="">
+                        </div>
+                        <div class="input-group mb-3 flex-nowrap">
+                            <div class="input-group-prepend w-25">
+                                <span class="input-group-text w-100" id="addon-wrapping">Bayar</span>
+                            </div>
+                            <input id="payingInput" type="number" class="form-control w-50" placeholder="Masukkan Nominal"
+                                   value="">
+                        </div>
+                        <div class="input-group mb-3 flex-nowrap">
+                            <div class="input-group-prepend w-25">
+                                <span class="input-group-text w-100" id="addon-wrapping">Kembalian</span>
+                            </div>
+                            <input id="changeInput" type="number" class="form-control w-50" disabled placeholder="Nominal Kembalian"
+                                   value="0">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" id="pay" class="btn btn-primary">Bayar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- /.card -->
 
     </section>
@@ -79,8 +116,11 @@
             var data = {!! json_encode($data) !!};
             var item = [];
 
+            updateTable();
+
             function updateTable() {
                 var total = 0;
+                var totalqty = 0;
                 $('tbody').empty();
 
                 if (item.length === 0) {
@@ -99,11 +139,12 @@
                     <td>${i.subtotal.toLocaleString()}</td>
                     <td><button class="btn btn-danger btn-sm delete">Delete</button></td>
                 </tr>`;
+                        totalqty += parseInt(i.qty);
                         total += i.subtotal;
                         $('tbody').append(row);
                     });
                 }
-
+                $('#totalqty').val(totalqty);
                 $('#total').html(total.toLocaleString());
             }
 
@@ -123,6 +164,7 @@
                         existingItem.qty = parseInt(existingItem.qty) + parseInt(value);
                     } else {
                         item.push({
+                            id: foundItem.id,
                             kode: foundItem.kode,
                             nama: foundItem.nama,
                             harga: foundItem.harga,
@@ -141,7 +183,7 @@
                     return item.kode === code;
                 });
 
-                if (existingItem) {
+                if (existingItem && value > 0) {
                     existingItem.qty = value;
                     updateTable();
                 }
@@ -159,21 +201,73 @@
                 }
             });
 
-            updateTable();
-
-
-            $('#bayar').click(function() {
-                var total = $('#total').val();
-                var bayar = prompt('Total: ' + total + '\nBayar: ');
-
-                if (bayar) {
-                    var kembali = parseInt(bayar) - parseInt(total);
-                    alert('Kembali: ' + kembali);
-                    item = [];
-                    updateTable();
-                }
+            $('#payingForm').click(function() {
+                var total = $('#total').html().replace(/,/g, '');
+                $('#totalInput').val(total);
             });
+
+            $(document).on('change', '#payingInput', function() {
+                var total = $('#totalInput').val();
+                var paying = $(this).val();
+                var change = parseInt(paying) - parseInt(total);
+                $('#changeInput').val(change);
+            });
+
+            $('#pay').click(function() {
+                var payment =
+                    {
+                        'qty': parseInt($('#totalqty').val()),
+                        'total': parseInt($('#total').html().replace(/,/g, '')),
+                        'bayar': parseInt($('#payingInput').val()),
+                        'kembali': parseInt($('#changeInput').val())
+                    }
+                // console.log(payment);
+                storeData(payment);
+
+            });
+
             // store data to database
+
+            function storeData(payment) {
+                $.ajax({
+                    url: "{{ route('kasir.store') }}",
+                    method: "POST",
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        data: {
+                            'item': item,
+                            'payment': payment
+                        }
+                    },
+                    success: function (response) {
+                        clearData();
+
+                        Swal.fire({
+                            title: 'Berhasil',
+                            text: 'Transaksi Berhasil',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = "{{ route('kasir.index') }}";
+                            }
+                        })
+                    }
+                });
+            }
+
+            function clearData() {
+                item = [];
+                updateTable();
+
+                $('#code').val('');
+                $('#value').val('');
+                $('#totalqty').val('');
+                $('#total').html('');
+                $('#totalInput').val('');
+                $('#payingInput').val('');
+                $('#changeInput').val('');
+            }
         });
             {{--$.ajax({--}}
             {{--    url: "{{ route('kasir.store') }}",--}}

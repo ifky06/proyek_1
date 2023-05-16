@@ -4,6 +4,7 @@ use App\Http\Controllers\BarangController;
 use App\Http\Controllers\PemasokController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\SatuanController;
+use App\Http\Controllers\TransaksiKeluarController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,4 +27,6 @@ Route::resource('pemasok', PemasokController::class);
 Route::resource('kategori',KategoriController::class);
 Route::resource('satuan', SatuanController::class);
 
-Route::get('kasir', [BarangController::class, 'kasir']);
+Route::resource('kasir', TransaksiKeluarController::class);
+
+Route::get('/test',[TransaksiKeluarController::class,'store']);
