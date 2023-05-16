@@ -8,7 +8,7 @@
         <a href="../../index3.html" class="nav-link">Home</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-          <form action="{{url('logout')}}" method="post" style="display: inline">
+          <form action="{{url('/logout')}}" method="post" style="display: inline">
               @csrf
               @method('POST')
               <button type="submit" class="btn text-secondary btn-link">Logout</button>

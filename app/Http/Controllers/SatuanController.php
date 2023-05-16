@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Riwayat;
 use App\Models\Satuan;
 use Illuminate\Http\Request;
 
 class SatuanController extends Controller
 {
+    protected string $location = 'satuan';
     /**
      * Display a listing of the resource.
      *
@@ -54,6 +56,7 @@ class SatuanController extends Controller
             'kode'=>Satuan::generateKode($request->satuan)
         ]);
         Satuan::create($request->all());
+        Riwayat::add('store', $this->location, $request->kode);
         return redirect('satuan')
             ->with('success','Data barang berhasil ditambahkan');
     }
@@ -95,6 +98,7 @@ class SatuanController extends Controller
             'satuan'=>'required',
         ]);
         $satuan->update($request->all());
+        Riwayat::add('update', $this->location, $satuan->kode);
         return redirect('satuan')
             ->with('success', 'Data barang berhasil diubah');
     }
@@ -108,6 +112,7 @@ class SatuanController extends Controller
     public function destroy(Satuan $satuan)
     {
         $satuan->delete();
+        Riwayat::add('delete', $this->location, $satuan->kode);
         return redirect('satuan')
             ->with('success', 'Data barang berhasil dihapus');
     }
