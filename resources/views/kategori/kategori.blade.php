@@ -40,6 +40,7 @@
                 <table id="example1" class="table table-bordered table-striped">
                     <thead>
                     <tr>
+                        <th>Kode</th>
                         <th>Nama</th>
                         <th>Action</th>
                     </tr>
@@ -47,6 +48,8 @@
                     <tbody>
                     @foreach($data as $row)
                         <tr>
+                            <input type="hidden" class="code" value="{{$row->kode}}">
+                            <td>{{$row->kode}}</td>
                             <td>{{$row->nama}}</td>
                             <td>
                                 <a href="{{route('kategori.edit', $row->id)}}" class="btn btn-primary btn-sm">Edit</a>

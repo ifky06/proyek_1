@@ -6,7 +6,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Pemasok</h1>
+                    <h1>Riwayat</h1>
                 </div>
 {{--                <div class="col-sm-6">--}}
 {{--                    <ol class="breadcrumb float-sm-right">--}}
@@ -24,11 +24,10 @@
         <!-- Default box -->
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Pemasok</h3>
+                <h3 class="card-title">Riwayat</h3>
             </div>
             <div class="card-body">
-                <a href="{{url('pemasok/create')}}" class="btn btn-sm btn-success my-2">Tambah Data</a>
-                <form action="{{url('pemasok')}}" method="get">
+                <form action="{{url('riwayat')}}" method="get">
                     <div class="input-group mb-3 w-25">
                         <input type="text" name="search" class="form-control" placeholder="Search"
                                value="{{request()->search}}">
@@ -40,28 +39,22 @@
                 <table id="example1" class="table table-bordered table-striped">
                     <thead>
                     <tr>
-                        <th>Kode</th>
-                        <th>Nama</th>
-                        <th>Alamat</th>
-                        <th>No.Telp</th>
-                        <th>Action</th>
+                        <th>Tanggal</th>
+                        <th>Jenis</th>
+                        <th>Lokasi</th>
+                        <th>Keterangan</th>
+                        <th>User</th>
                     </tr>
                     </thead>
                     <tbody>
                     @foreach($data as $row)
                         <tr>
                             <input type="hidden" class="code" value="{{$row->kode}}">
-                            <td>{{$row->kode}}</td>
-                            <td>{{$row->nama}}</td>
-                            <td>{{$row->alamat}}</td>
-                            <td>{{$row->no_tlp}}</td>
-                            <td>
-                                <a href="{{route('pemasok.edit', $row->id)}}" class="btn btn-primary btn-sm">Edit</a>
-                                <form action="{{route('pemasok.destroy', $row->id)}}" method="post" class="d-inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="btn btn-danger btn-sm" onclick="return confirm('Apakah anda yakin?')">Delete</button>
-                                </form></td>
+                            <td>{{$row->tanggal}}</td>
+                            <td>{{$row->jenis}}</td>
+                            <td>{{$row->lokasi}}</td>
+                            <td>{{$row->keterangan}}</td>
+                            <td>{{$row->id_user}}</td>
                         </tr>
                     @endforeach
                     </tbody>

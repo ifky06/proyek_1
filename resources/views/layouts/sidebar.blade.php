@@ -45,7 +45,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ url('/') }}" class="nav-link">
+                    <a href="{{ url('/pemasok') }}" class="nav-link">
                         <i class="nav-icon fas fa-solid fa-users"></i>
                         <p>
                             Pemasok
@@ -53,7 +53,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ url('/') }}" class="nav-link">
+                    <a href="{{ url('/kategori') }}" class="nav-link">
                         <i class="nav-icon fas fa-bars"></i>
                         <p>
                             Kategori Barang
@@ -81,6 +81,14 @@
                         <i class="nav-icon fas fa-file"></i>
                         <p>
                             Laporan Transaksi
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url('/riwayat') }}" class="nav-link">
+                        <i class="nav-icon fas fa-file"></i>
+                        <p>
+                            Riwayat
                         </p>
                     </a>
                 </li>

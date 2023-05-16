@@ -37,6 +37,7 @@
                 <table class="table table-bordered table-striped mb-3">
                     <thead>
                     <tr>
+                        <th>Kode</th>
                         <th>Nama Satuan</th>
                         <th>Action</th>
                     </tr>
@@ -44,6 +45,7 @@
                     <tbody>
                     @foreach($data as $row)
                         <tr>
+                            <td>{{$row->kode}}</td>
                             <td>{{$row->satuan}}</td>
                             <td>
                                 <a href="{{route('satuan.edit', $row->id)}}" class="btn btn-primary btn-sm">Edit</a>

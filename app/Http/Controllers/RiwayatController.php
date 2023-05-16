@@ -12,9 +12,21 @@ class RiwayatController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if ($request->has('search')){
+            $data=Riwayat::where('tanggal','like',"%{$request->search}%")
+                ->orWhere('jenis','like',"%{$request->search}%")
+                ->orWhere('lokasi','like',"%{$request->search}%")
+                ->orWhere('keterangan','like',"%{$request->search}%")
+                ->orWhere('id_user','like',"%{$request->search}%")
+                ->paginate(5);
+            return view('riwayat')
+                ->with('data',$data);
+        }
+        $data=Riwayat::paginate(5);
+        return view('riwayat')
+            ->with('data',$data);
     }
 
     /**
