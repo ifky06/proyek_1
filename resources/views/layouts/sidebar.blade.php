@@ -69,7 +69,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ url('/') }}" class="nav-link">
+                    <a href="{{ url('/kasir') }}" class="nav-link">
                         <i class="nav-icon fas fa-exchange-alt"></i>
                         <p>
                             Transaksi Barang
