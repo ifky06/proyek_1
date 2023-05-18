@@ -36,8 +36,13 @@ class Barang extends Model
     {
         return $this->hasMany(DetailTransaksiMasuk::class, 'id_barang', 'id');
 
-    public function getTotalPenjualan(){
-        return $this->hasMany(Detail_transaksi_keluar::class)->sum('qty');
+    // public function getTotalPenjualan(){
+    //     return $this->hasMany(Detail_transaksi_keluar::class)->sum('qty');
 
+    }
+
+    public function detailTransaksiKeluar()
+    {
+        return $this->hasMany(Detail_transaksi_keluar::class, 'id_barang', 'id');
     }
 }

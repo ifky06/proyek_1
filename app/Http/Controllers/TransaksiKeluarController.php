@@ -51,9 +51,11 @@ class TransaksiKeluarController extends Controller
         ]);
 
         $transaksi_id = Transaksi_Keluar::latest()->first()->id;
+        date_default_timezone_set('Asia/Jakarta');
 
         foreach ($data as $item) {
             Detail_transaksi_keluar::create([
+                'tanggal' => date('Y-m-d H:i:s'),
                 'id_transaksi' => $transaksi_id,
                 'id_barang' => $item['id'],
                 'qty' => $item['qty'],

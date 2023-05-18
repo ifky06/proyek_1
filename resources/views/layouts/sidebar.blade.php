@@ -72,7 +72,7 @@
                     <a href="{{ url('/kasir') }}" class="nav-link">
                         <i class="nav-icon fas fa-exchange-alt"></i>
                         <p>
-                            Transaksi Barang
+                            Transaksi Keluar
                         </p>
                     </a>
                 </li>
@@ -85,7 +85,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ url('/') }}" class="nav-link">
+                    <a href="{{ url('/laporankeluar') }}" class="nav-link">
                         <i class="nav-icon fas fa-file"></i>
                         <p>
                             Laporan Transaksi Keluar

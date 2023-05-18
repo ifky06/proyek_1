@@ -14,5 +14,10 @@ class Transaksi_Keluar extends Model
         'grand_total',
         'bayar',
         'kembalian',
+        'id_users'
     ];
+
+    public function detailTransaksiKeluar(){
+        return $this->hasMany(Detail_transaksi_keluar::class, 'id_transaksi', 'id');
+    }
 }
