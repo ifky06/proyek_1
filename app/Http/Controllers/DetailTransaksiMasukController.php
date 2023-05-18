@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Barang;
 use App\Models\DetailTransaksiMasuk;
 use Illuminate\Http\Request;
 
@@ -12,9 +13,17 @@ class DetailTransaksiMasukController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if ($request->has('search')){
+            $data=DetailTransaksiMasuk::where('tanggal','like',"%{$request->search}%")
+                ->paginate(5);
+            return view('detailmasuk.detailmasuk')
+                ->with('data',$data);
+        }
+        $data=DetailTransaksiMasuk::paginate(5);
+        return view('detailmasuk.detailmasuk')
+            ->with('data',$data);
     }
 
     /**

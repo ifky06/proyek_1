@@ -77,10 +77,26 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="{{ url('/transaksimasuk') }}" class="nav-link">
+                        <i class="nav-icon fas fa-exchange-alt"></i>
+                        <p>
+                            Transaksi Masuk
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="{{ url('/') }}" class="nav-link">
                         <i class="nav-icon fas fa-file"></i>
                         <p>
-                            Laporan Transaksi
+                            Laporan Transaksi Keluar
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url('/laporanmasuk') }}" class="nav-link">
+                        <i class="nav-icon fas fa-file"></i>
+                        <p>
+                            Laporan Transaksi Masuk
                         </p>
                     </a>
                 </li>

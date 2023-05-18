@@ -32,7 +32,12 @@ class Barang extends Model
         return $this->belongsTo(Satuan::class, 'id_satuan');
     }
 
+    public function detailTransaksiMasuk()
+    {
+        return $this->hasMany(DetailTransaksiMasuk::class, 'id_barang', 'id');
+
     public function getTotalPenjualan(){
         return $this->hasMany(Detail_transaksi_keluar::class)->sum('qty');
+
     }
 }
