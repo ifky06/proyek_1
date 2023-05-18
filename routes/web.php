@@ -18,15 +18,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('dashboard');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/', function () {
+        return view('dashboard');
+    });
+
+    Route::middleware(['owner'])->group(function(){
+        Route::resource('barang', BarangController::class);
+        Route::resource('pemasok', PemasokController::class);
+        Route::resource('kategori',KategoriController::class);
+        Route::resource('satuan', SatuanController::class);
+    });
 });
-
-Route::resource('barang', BarangController::class);
-Route::resource('pemasok', PemasokController::class);
-Route::resource('kategori',KategoriController::class);
-Route::resource('satuan', SatuanController::class);
-
 Auth::routes();
 Route::get('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout']);
 
