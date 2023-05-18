@@ -31,4 +31,9 @@ class Barang extends Model
     {
         return $this->belongsTo(Satuan::class, 'id_satuan');
     }
+
+    public function detailTransaksiMasuk()
+    {
+        return $this->hasMany(DetailTransaksiMasuk::class, 'id_barang', 'id');
+    }
 }
