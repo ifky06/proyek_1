@@ -10,6 +10,7 @@ use App\Http\Controllers\TransaksiKeluarController;
 use App\Http\Controllers\TransaksiMasukController;
 use App\Models\DetailTransaksiMasuk;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Dashboard;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,9 +23,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('dashboard');
-});
+Route::get('/', [Dashboard::class, 'index']);
 
 Route::resource('barang', BarangController::class);
 Route::resource('pemasok', PemasokController::class);
