@@ -113,14 +113,14 @@
 @push('scripts')
     <script>
         $(document).ready(function() {
-            var data = {!! json_encode($data) !!};
-            var item = [];
+            const data = {!! json_encode($data) !!};
+            let item = [];
 
             updateTable();
 
             function updateTable() {
-                var total = 0;
-                var totalqty = 0;
+                let total = 0;
+                let totalqty = 0;
                 $('tbody').empty();
 
                 if (item.length === 0) {
@@ -128,7 +128,7 @@
                 } else {
                     item.forEach(function(i) {
                         i.subtotal = parseInt(i.harga) * parseInt(i.qty);
-                        var row = `<tr>
+                        let row = `<tr>
                     <input type="hidden" class="code" value="${i.kode}">
                     <td>${i.kode}</td>
                     <td>${i.nama}</td>
@@ -149,14 +149,14 @@
             }
 
             $('#add').click(function() {
-                var code = $('#code').val();
-                var value = $('#value').val();
-                var foundItem = data.find(function(item) {
+                let code = $('#code').val();
+                let value = $('#value').val();
+                let foundItem = data.find(function(item) {
                     return item.kode === code;
                 });
 
                 if (foundItem) {
-                    var existingItem = item.find(function(item) {
+                    let existingItem = item.find(function(item) {
                         return item.kode === foundItem.kode;
                     });
 
@@ -177,9 +177,9 @@
             });
 
             $(document).on('change', '.value', function() {
-                var code = $(this).closest('tr').find('.code').val();
-                var value = $(this).val();
-                var existingItem = item.find(function(item) {
+                let code = $(this).closest('tr').find('.code').val();
+                let value = $(this).val();
+                let existingItem = item.find(function(item) {
                     return item.kode === code;
                 });
 
@@ -190,8 +190,8 @@
             });
 
             $(document).on('click', '.delete', function() {
-                var code = $(this).closest('tr').find('.code').val();
-                var index = item.findIndex(function(item) {
+                let code = $(this).closest('tr').find('.code').val();
+                let index = item.findIndex(function(item) {
                     return item.kode === code;
                 });
 
@@ -202,19 +202,19 @@
             });
 
             $('#payingForm').click(function() {
-                var total = $('#total').html().replace(/,/g, '');
+                let total = $('#total').html().replace(/,/g, '');
                 $('#totalInput').val(total);
             });
 
             $(document).on('change', '#payingInput', function() {
-                var total = $('#totalInput').val();
-                var paying = $(this).val();
-                var change = parseInt(paying) - parseInt(total);
+                let total = $('#totalInput').val();
+                let paying = $(this).val();
+                let change = parseInt(paying) - parseInt(total);
                 $('#changeInput').val(change);
             });
 
             $('#pay').click(function() {
-                var payment =
+                let payment =
                     {
                         'qty': parseInt($('#totalqty').val()),
                         'total': parseInt($('#total').html().replace(/,/g, '')),

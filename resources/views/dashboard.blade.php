@@ -34,7 +34,7 @@
                   <div class="small-box bg-info">
                     <div class="inner">
                       <h3><i class="nav-icon fas fa-book"></i></h3>
-      
+
                       <p>{{$barangHabis}} Barang Habis</p>
                     </div>
                     <div class="icon">
@@ -49,7 +49,7 @@
                   <div class="small-box bg-success">
                     <div class="inner">
                       <h3><i class="nav-icon fas fa-book"></i></h3>
-      
+
                       <p>{{$barangSegeraHabis}} Barang Segera Habis</p>
                     </div>
                     <div class="icon">
@@ -64,7 +64,7 @@
                   <div class="small-box bg-warning">
                     <div class="inner">
                       <h3><i class="nav-icon fas fa-book"></i></h3>
-      
+
                       <p>{{$barangTersedia}} Barang Tersedia</p>
                     </div>
                     <div class="icon">
@@ -79,7 +79,7 @@
                   <div class="small-box bg-danger">
                     <div class="inner">
                       <h3><i class="nav-icon fas fa-exchange-alt"></i><h3>
-      
+
                       <p>{{$totalTransaksi}} Total Transaksi</p>
                     </div>
                     <div class="icon">
@@ -92,77 +92,42 @@
               </div>
             </div>
           </div>
-
-
-          <div class="card col-lg-5 col-6">
-            <h5>Top 5 Barang Cepat Habis</h5>
-                Urutan Barang Cepat Habis
-            <ul class="products-list product-list-in-card pl-2 pr-2">
-                  <li class="item">
-                    <div class="product-img">
-                      {{-- <img src="dist/img/default-150x150.png" alt="Product Image" class="img-size-50"> --}}
+            <div class="d-flex justify-content-between">
+                <div class="card w-100 mr-1">
+                    <div class="card-header">
+                        <h5>Top 5 Barang Cepat Habis</h5>
                     </div>
-                    <div class="product-info">
-                     Nama Barang
-                        <span class="float-right">Total</span>
-                      {{-- <span class="product-description">
-                        Samsung 32" 1080p 60Hz LED Smart HDTV.
-                      </span> --}}
+                    <div class="card-body">
+                        <ul class="products-list product-list-in-card pl-2 pr-2">
+                            @foreach ($barangCepatHabis as $item)
+                                <li class="item">
+                                    <div class="product-info">
+                                        <p class="product-title">{{$item->barang->nama}}
+                                            <span class="badge badge-info float-right">{{$item->total}}</span></p>
+                                    </div>
+                                </li>
+                            @endforeach
+                        </ul>
                     </div>
-                  </li>
-
-              
-              <!-- /.item -->
-              <li class="item">
-                <div class="product-img">
-                  {{-- <img src="dist/img/default-150x150.png" alt="Product Image" class="img-size-50"> --}}
                 </div>
-                <div class="product-info">
-                  <a href="javascript:void(0)" class="product-title">Bibit Jagung
-                    <span class="badge badge-info float-right">30</span></a>
-                  {{-- <span class="product-description">
-                    26" Mongoose Dolomite Men's 7-speed, Navy Blue.
-                  </span> --}}
-                </div>
-              </li>
-              <!-- /.item -->
-              <li class="item">
-                <div class="product-img">
-                  {{-- <img src="dist/img/default-150x150.png" alt="Product Image" class="img-size-50"> --}}
-                </div>
-                <div class="product-info">
-                  <a href="javascript:void(0)" class="product-title">
-                    Bibit <span class="badge badge-danger float-right">
-                    10
-                  </span>
-                  </a>
-                  {{-- <span class="product-description">
-                    Xbox One Console Bundle with Halo Master Chief Collection.
-                  </span> --}}
-                </div>
-              </li>
-            </ul>
-          </div> 
-
-
-          <div class="card col-lg-6 col-6">
-            <h5>Top 5 Barang Cepat Habis</h5>
-                Urutan Barang Cepat Habis
-            <ul class="products-list product-list-in-card pl-2 pr-2">
-                  <li class="item">
-                    <div class="product-img">
-                      {{-- <img src="dist/img/default-150x150.png" alt="Product Image" class="img-size-50"> --}}
+                <div class="card w-100 ml-1">
+                    <div class="card-header">
+                        <h5>Top 5 Barang Baru Masuk</h5>
                     </div>
-                    <div class="product-info">
-                     Nama Barang
-                        <span class="float-right">Total</span>
-                      {{-- <span class="product-description">
-                        Samsung 32" 1080p 60Hz LED Smart HDTV.
-                      </span> --}}
+                    <div class="card-body">
+                        <ul class="products-list product-list-in-card pl-2 pr-2">
+                            @foreach ($barangBaruMasuk as $item)
+                                <li class="item">
+                                    <div class="product-info">
+                                        <p class="product-title pb-0 mb-0">{{$item->barang->nama}}</p>
+                                        <span class="m-0 p-0">{{$item->tanggal}}</span>
+                                    </div>
+                                </li>
+                            @endforeach
+                        </ul>
                     </div>
-                  </li>
-                  
-          </div>  
+                </div>
+            </div>
           <!-- /.card -->
 
         </section>

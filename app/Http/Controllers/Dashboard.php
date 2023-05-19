@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Barang;
+use App\Models\Detail_transaksi_keluar;
 use App\Models\DetailTransaksiMasuk;
 use App\Models\Transaksi_Keluar;
 use App\Models\TransaksiMasuk;
@@ -26,25 +27,27 @@ class Dashboard extends Controller
         $transaksiMasuk=TransaksiMasuk::all()->count();
         $transaksiKeluar=Transaksi_Keluar::all()->count();
 
-        // $barangCepatHabis=Barang::withCount('getTotalPenjualan')
-        // ->orderByDesc('get_total_penjualan_count')
-        // ->take(5)
-        // ->get();
+
+        $barangCepatHabis = Detail_transaksi_keluar::with('barang')
+            ->selectRaw('id_barang, sum(qty) as total')
+            ->groupBy('id_barang')
+            ->orderByDesc('total')
+            ->take(5)
+            ->get();
+
+        $barangBaruMasuk = DetailTransaksiMasuk::all()
+            ->sortByDesc('tanggal')
+            ->take(5);
 
         return view('dashboard')
-        ->with('barangHabis', $barangHabis)
-        ->with('barangSegeraHabis', $barangSegeraHabis)
-        ->with('barangTersedia', $barangTersedia)
-        ->with('totalTransaksi', $transaksiMasuk+$transaksiKeluar);
-        // ->with('barangCepatHabis', $barangCepatHabis);
-
-
-
-
-
-        
-
-      
+            ->with([
+                'barangHabis' => $barangHabis,
+                'barangSegeraHabis' => $barangSegeraHabis,
+                'barangTersedia' => $barangTersedia,
+                'totalTransaksi' => $transaksiMasuk + $transaksiKeluar,
+                'barangCepatHabis' => $barangCepatHabis,
+                'barangBaruMasuk' => $barangBaruMasuk
+            ]);
     }
 
     /**
