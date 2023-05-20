@@ -5,15 +5,6 @@
 @section('content')
 
 {{--    add sweetalert2 message--}}
-    @if(session('success'))
-        <script>
-            Swal.fire(
-                'Success!',
-                '{{session('success')}}',
-                'success'
-            )
-        </script>
-    @endif
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -36,7 +27,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Import Excel</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -125,10 +116,9 @@
 {{--    add delete confirmation alert--}}
         <script>
             $('.delete').submit(function () {
-                var code = $(this).closest('tr').find('.code').val();
                 Swal.fire({
                     title: 'Apakah anda yakin?',
-                    text: "Setelah dihapus, Anda tidak dapat memulihkan Data Barang "+ code +" ini lagi!",
+                    text: "Setelah dihapus, Anda tidak dapat memulihkan Data ini lagi!",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6', // blue
@@ -141,7 +131,6 @@
                 })
                 return false;
             });
-
             // format number harga
             $(document).ready(function () {
                 // get all harga

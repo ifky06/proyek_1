@@ -55,10 +55,10 @@
                             <td>{{$row->nama}}</td>
                             <td>
                                 <a href="{{route('kategori.edit', $row->id)}}" class="btn btn-primary btn-sm">Edit</a>
-                                <form action="{{route('kategori.destroy', $row->id)}}" method="post" class="d-inline">
+                                <form action="{{route('kategori.destroy', $row->id)}}" method="post" class="delete d-inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="btn btn-danger btn-sm" onclick="return confirm('Apakah anda yakin?')">Delete</button>
+                                    <button class="btn btn-danger btn-sm">Delete</button>
                                 </form>
                             </td>
                         </tr>
@@ -78,7 +78,24 @@
 @endpush
 
 @push('scripts')
-
+<script>
+    $('.delete').submit(function () {
+        Swal.fire({
+            title: 'Apakah anda yakin?',
+            text: "Setelah dihapus, Anda tidak dapat memulihkan Data ini lagi!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6', // blue
+            cancelButtonColor: '#d33', // red
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                this.submit();
+            }
+        })
+        return false;
+    });
+</script>
 
 
 @endpush

@@ -23,6 +23,7 @@
     <script src="{{asset('/assets/plugins/sweetalert2/sweetalert2.min.js')}}"></script>
 </head>
 <body class="hold-transition sidebar-mini">
+
 <!-- Site wrapper -->
 <div class="wrapper">
   <!-- Navbar -->
@@ -90,6 +91,16 @@
 <script src="{{ asset('assets/dist/js/adminlte.min.js') }}"></script>
 <!-- AdminLTE for demo purposes -->
 {{-- <script src="{{ asset('assets/dist/js/demo.js') }}"></script> --}}
+
+@if(session('success'))
+    <script>
+        Swal.fire(
+            'Success!',
+            '{{session('success')}}',
+            'success'
+        )
+    </script>
+@endif
 
 
 @stack('scripts')
