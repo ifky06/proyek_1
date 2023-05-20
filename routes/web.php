@@ -36,3 +36,7 @@ Route::resource('transaksimasuk', TransaksiMasukController::class);
 Route::resource('laporanmasuk', DetailTransaksiMasukController::class);
 Route::resource('laporankeluar', DetailTransaksiKeluarController::class);
 Route::resource('riwayat', RiwayatController::class);
+
+Route::get('export/barang', [BarangController::class, 'export']);
+Route::post('import/barang', [BarangController::class, 'import']);
+Route::get('import/barang/template', [BarangController::class, 'template']);

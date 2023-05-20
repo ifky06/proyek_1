@@ -32,12 +32,37 @@
 
     <!-- Main content -->
     <section class="content">
-
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="importForm" method="post" action="{{url('import/barang')}}" enctype="multipart/form-data">
+                            @csrf
+                            <div class="form-group">
+                                <input type="file" accept=".xlsx" name="file" id="image" class="form-control-file">
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <a href="{{url('import/barang/template')}}" class="btn btn-sm btn-success">Download Template</a>
+                                <button type="submit" class="btn btn-sm btn-primary" id="importButton">Import</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- Default box -->
         <div class="card">
             <div class="card-body">
                 <a href="{{url('barang/create')}}" class="btn btn-sm btn-success my-2">Tambah Data</a>
                 <a href="{{url('satuan')}}" class="btn btn-sm btn-info my-2">Data Satuan</a>
+                <a href="{{url('export/barang')}}" class="btn btn-sm btn-success my-2">Export Excel</a>
+                <a href="#" class="btn btn-sm btn-warning my-2" data-toggle="modal" data-target="#exampleModal">Import Excel</a>
                 <form action="{{url('barang')}}" method="get">
                     <div class="input-group mb-3 w-25">
                         <input type="text" name="search" class="form-control" placeholder="Search"

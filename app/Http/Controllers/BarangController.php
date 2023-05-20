@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\TemplateExport;
+use App\Imports\BarangImport;
 use App\Models\Barang;
 use App\Models\Kategori;
 use App\Models\Pemasok;
 use App\Models\Riwayat;
 use App\Models\Satuan;
+use App\Exports\BarangExport;
+use \Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 
 class BarangController extends Controller
@@ -144,5 +148,27 @@ class BarangController extends Controller
 
         return redirect('barang')
             ->with('success', 'Data barang berhasil dihapus');
+    }
+
+    public function export()
+    {
+        return Excel::download(new BarangExport, 'laporan_barang_'.date('Y-m-d').'.xlsx');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv'
+        ]);
+
+        Excel::import(new BarangImport, $request->file('file'));
+
+        return redirect('barang')
+            ->with('success', 'Data barang berhasil diimport');
+    }
+
+    public function template()
+    {
+        return Excel::download(new TemplateExport, 'template_barang.xlsx');
     }
 }

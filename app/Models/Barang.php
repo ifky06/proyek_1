@@ -14,7 +14,12 @@ class Barang extends Model
     public static function generateKode($name): string
     {
         $order = self::where('nama', $name)->count() + 1;
-        return strtoupper(substr($name, 0, 3)) . sprintf('%03d', $order);
+        $kode = strtoupper(substr($name, 0, 3)) . sprintf('%03d', $order);
+        if (self::where('kode', $kode)->exists()) {
+            $order++;
+            $kode = strtoupper(substr($name, 0, 3)) . sprintf('%03d', $order);
+        }
+        return $kode;
     }
 
     public function kategori()
