@@ -69,7 +69,7 @@
                             <td>{{$row->kategori->nama}}</td>
                             <td>{{$row->pemasok->nama}}</td>
                             <td>{{$row->satuan->satuan}}</td>
-                            <td>{{$row->harga}}</td>
+                            <td>Rp. <span class="harga">{{$row->harga}}</span></td>
                             <td>{{$row->stok}}</td>
                             <td>
                                 <a href="{{route('barang.edit', $row->id)}}" class="btn btn-primary btn-sm">Edit</a>
@@ -116,6 +116,20 @@
                 })
                 return false;
             });
+
+            // format number harga
+            $(document).ready(function () {
+                // get all harga
+
+                $('.harga').each(function () {
+                    let harga = $(this).text();
+                    let reverse = harga.toString().split('').reverse().join(''),
+                        ribuan = reverse.match(/\d{1,3}/g);
+                    ribuan = ribuan.join(',').split('').reverse().join('');
+                    $(this).text(ribuan);
+                });
+            });
         </script>
+
 
 @endpush
