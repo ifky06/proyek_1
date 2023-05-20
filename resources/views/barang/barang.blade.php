@@ -1,5 +1,7 @@
 @extends('layouts.template')
 
+@section('title', 'Barang')
+
 @section('content')
 
 {{--    add sweetalert2 message--}}
@@ -35,6 +37,7 @@
         <div class="card">
             <div class="card-body">
                 <a href="{{url('barang/create')}}" class="btn btn-sm btn-success my-2">Tambah Data</a>
+                <a href="{{url('satuan')}}" class="btn btn-sm btn-info my-2">Data Satuan</a>
                 <form action="{{url('barang')}}" method="get">
                     <div class="input-group mb-3 w-25">
                         <input type="text" name="search" class="form-control" placeholder="Search"

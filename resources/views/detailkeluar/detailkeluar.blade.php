@@ -1,5 +1,7 @@
 @extends('layouts.template')
 
+@section('title', 'Laporan Transaksi Keluar')
+
 @section('content')
 
     <section class="content-header">
