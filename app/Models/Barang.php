@@ -15,10 +15,18 @@ class Barang extends Model
     {
         $order = self::where('nama', $name)->count() + 1;
         $kode = strtoupper(substr($name, 0, 3)) . sprintf('%03d', $order);
+
+        return self::avoidSameKode($kode, $name, $order);
+    }
+
+    public static function avoidSameKode($kode, $name, $order): string
+    {
         if (self::where('kode', $kode)->exists()) {
             $order++;
             $kode = strtoupper(substr($name, 0, 3)) . sprintf('%03d', $order);
+            return self::avoidSameKode($kode, $name, $order);
         }
+
         return $kode;
     }
 

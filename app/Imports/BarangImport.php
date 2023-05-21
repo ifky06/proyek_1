@@ -34,6 +34,7 @@ class BarangImport implements ToModel, WithHeadingRow
     function kategori($nama){
         if (!Kategori::where('nama',$nama)->exists()){
             $kategori = new Kategori();
+            $kategori->kode = Kategori::generateKode($nama);
             $kategori->nama = $nama;
             $kategori->save();
             return $kategori->id;
@@ -44,6 +45,7 @@ class BarangImport implements ToModel, WithHeadingRow
     function pemasok($nama){
         if (!Pemasok::where('nama',$nama)->exists()){
             $pemasok = new Pemasok();
+            $pemasok->kode = Pemasok::generateKode($nama);
             $pemasok->nama = $nama;
             $pemasok->save();
             return $pemasok->id;
@@ -54,6 +56,7 @@ class BarangImport implements ToModel, WithHeadingRow
     function satuan($nama){
         if (!Satuan::where('satuan',$nama)->exists()){
             $satuan = new Satuan();
+            $satuan->kode = Satuan::generateKode($nama);
             $satuan->satuan = $nama;
             $satuan->save();
             return $satuan->id;
