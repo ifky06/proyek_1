@@ -59,8 +59,10 @@
                     <div class="form-group">
                         <label for="role">Role</label>
                         <select name="role" id="role" class="form-control">
+                            @if (Auth::user()->role == '0')
                             <option value="0" @isset($data) @selected($data->role == '0') @endisset>Owner</option>
                             <option value="1" @isset($data) @selected($data->role == '1') @endisset>Admin</option>
+                            @endif
                             <option value="2" @isset($data) @selected($data->role == '2') @endisset>Kasir</option>
                         </select>
                     </div>
