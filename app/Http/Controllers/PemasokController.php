@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pemasok;
+use App\Models\Riwayat;
 use Illuminate\Http\Request;
 
 class PemasokController extends Controller
 {
+    protected string $location = 'barang';
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +17,8 @@ class PemasokController extends Controller
     public function index(Request $request)
     {
         if ($request->has('search')){
-            $data=Pemasok::where('nama','like',"%{$request->search}%")
+            $data=Pemasok::where('kode','like',"%{$request->search}%")
+                ->orWhere('nama','like',"%{$request->search}%")
                 ->orWhere('alamat','like',"%{$request->search}%")
                 ->orWhere('no_tlp','like',"%{$request->search}%")
                 ->paginate(5);
@@ -50,8 +53,15 @@ class PemasokController extends Controller
             'nama'=>'required',
             'alamat'=>'required',
             'no_tlp'=>'required',
-    ]);
+        ]);
+        $request->merge([
+            'kode'=>Pemasok::generateKode($request->nama)
+        ]);
+
     Pemasok::create($request->all());
+
+    Riwayat::add('store', $this->location, $request->kode);
+
     return redirect('pemasok')
         ->with('success','Data pemasok berhasil ditambahkan');
     }
@@ -95,6 +105,9 @@ class PemasokController extends Controller
             'no_tlp'=>'required',
         ]);
         $pemasok->update($request->all());
+
+        Riwayat::add('update', $this->location, $pemasok->kode);
+
         return redirect('pemasok')
             ->with('success', 'Data pemasok berhasil diubah');
     }
@@ -108,6 +121,9 @@ class PemasokController extends Controller
     public function destroy(Pemasok $pemasok)
     {
         $pemasok->delete();
+
+        Riwayat::add('delete', $this->location, $pemasok->kode);
+
         return redirect('pemasok')
             ->with('success', 'Data pemasok berhasil dihapus');
     }

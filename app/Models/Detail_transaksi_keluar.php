@@ -10,6 +10,7 @@ class Detail_transaksi_keluar extends Model
     use HasFactory;
     protected $table = 'detail_transaksi_keluar';
     protected $fillable = [
+        'tanggal',
         'id_transaksi',
         'id_barang',
         'qty',
@@ -17,4 +18,12 @@ class Detail_transaksi_keluar extends Model
         'grandtotal',
         'id_users'
     ];
+
+    public function barang(){
+        return $this->belongsTo(Barang::class, 'id_barang', 'id');
+    }
+
+    public function transaksiKeluar(){
+        return $this->belongsTo(Transaksi_Keluar::class, 'id_transaksi', 'id');
+    }
 }

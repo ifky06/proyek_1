@@ -12,9 +12,17 @@ class DetailTransaksiKeluarController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if ($request->has('search')){
+            $data=Detail_transaksi_keluar::where('tanggal','like',"%{$request->search}%")
+                ->paginate(5);
+            return view('detailkeluar.detailkeluar')
+                ->with('data',$data);
+        }
+        $data=Detail_transaksi_keluar::paginate(5);
+        return view('detailkeluar.detailkeluar')
+            ->with('data',$data); 
     }
 
     /**

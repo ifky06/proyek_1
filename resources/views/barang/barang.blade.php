@@ -1,17 +1,10 @@
 @extends('layouts.template')
 
+@section('title', 'Barang')
+
 @section('content')
 
 {{--    add sweetalert2 message--}}
-    @if(session('success'))
-        <script>
-            Swal.fire(
-                'Success!',
-                '{{session('success')}}',
-                'success'
-            )
-        </script>
-    @endif
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -30,11 +23,37 @@
 
     <!-- Main content -->
     <section class="content">
-
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Import Excel</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="importForm" method="post" action="{{url('import/barang')}}" enctype="multipart/form-data">
+                            @csrf
+                            <div class="form-group">
+                                <input type="file" accept=".xlsx" name="file" id="image" class="form-control-file">
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <a href="{{url('import/barang/template')}}" class="btn btn-sm btn-success">Download Template</a>
+                                <button type="submit" class="btn btn-sm btn-primary" id="importButton">Import</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- Default box -->
         <div class="card">
             <div class="card-body">
                 <a href="{{url('barang/create')}}" class="btn btn-sm btn-success my-2">Tambah Data</a>
+                <a href="{{url('satuan')}}" class="btn btn-sm btn-info my-2">Data Satuan</a>
+                <a href="{{url('export/barang')}}" class="btn btn-sm btn-success my-2">Export Excel</a>
+                <a href="#" class="btn btn-sm btn-warning my-2" data-toggle="modal" data-target="#exampleModal">Import Excel</a>
                 <form action="{{url('barang')}}" method="get">
                     <div class="input-group mb-3 w-25">
                         <input type="text" name="search" class="form-control" placeholder="Search"
@@ -66,7 +85,7 @@
                             <td>{{$row->kategori->nama}}</td>
                             <td>{{$row->pemasok->nama}}</td>
                             <td>{{$row->satuan->satuan}}</td>
-                            <td>{{$row->harga}}</td>
+                            <td>Rp. <span class="harga">{{$row->harga}}</span></td>
                             <td>{{$row->stok}}</td>
                             <td>
                                 <a href="{{route('barang.edit', $row->id)}}" class="btn btn-primary btn-sm">Edit</a>
@@ -97,10 +116,9 @@
 {{--    add delete confirmation alert--}}
         <script>
             $('.delete').submit(function () {
-                var code = $(this).closest('tr').find('.code').val();
                 Swal.fire({
                     title: 'Apakah anda yakin?',
-                    text: "Setelah dihapus, Anda tidak dapat memulihkan Data Barang "+ code +" ini lagi!",
+                    text: "Setelah dihapus, Anda tidak dapat memulihkan Data ini lagi!",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6', // blue
@@ -113,6 +131,19 @@
                 })
                 return false;
             });
+            // format number harga
+            $(document).ready(function () {
+                // get all harga
+
+                $('.harga').each(function () {
+                    let harga = $(this).text();
+                    let reverse = harga.toString().split('').reverse().join(''),
+                        ribuan = reverse.match(/\d{1,3}/g);
+                    ribuan = ribuan.join(',').split('').reverse().join('');
+                    $(this).text(ribuan);
+                });
+            });
         </script>
+
 
 @endpush

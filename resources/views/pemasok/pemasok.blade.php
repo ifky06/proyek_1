@@ -1,5 +1,7 @@
 @extends('layouts.template')
 
+@section('title', 'Pemasok')
+
 @section('content')
 
     <section class="content-header">
@@ -40,6 +42,7 @@
                 <table id="example1" class="table table-bordered table-striped">
                     <thead>
                     <tr>
+                        <th>Kode</th>
                         <th>Nama</th>
                         <th>Alamat</th>
                         <th>No.Telp</th>
@@ -49,15 +52,17 @@
                     <tbody>
                     @foreach($data as $row)
                         <tr>
+                            <input type="hidden" class="code" value="{{$row->kode}}">
+                            <td>{{$row->kode}}</td>
                             <td>{{$row->nama}}</td>
                             <td>{{$row->alamat}}</td>
                             <td>{{$row->no_tlp}}</td>
                             <td>
                                 <a href="{{route('pemasok.edit', $row->id)}}" class="btn btn-primary btn-sm">Edit</a>
-                                <form action="{{route('pemasok.destroy', $row->id)}}" method="post" class="d-inline">
+                                <form action="{{route('pemasok.destroy', $row->id)}}" method="post" class="detele d-inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="btn btn-danger btn-sm" onclick="return confirm('Apakah anda yakin?')">Delete</button>
+                                    <button class="btn btn-danger btn-sm">Delete</button>
                                 </form></td>
                         </tr>
                     @endforeach
@@ -77,8 +82,23 @@
 
 @push('scripts')
 
-    {{--    <script>--}}
-    {{--        alert('Selamat Datang');--}}
-    {{--    </script>--}}
+    <script>
+        $('.delete').submit(function () {
+            Swal.fire({
+                title: 'Apakah anda yakin?',
+                text: "Setelah dihapus, Anda tidak dapat memulihkan Data ini lagi!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6', // blue
+                cancelButtonColor: '#d33', // red
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.submit();
+                }
+            })
+            return false;
+        });
+    </script>
 
 @endpush

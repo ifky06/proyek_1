@@ -1,5 +1,7 @@
 @extends('layouts.template')
 
+@section('title', 'Barang')
+
 @section('content')
 
     <section class="content-header">

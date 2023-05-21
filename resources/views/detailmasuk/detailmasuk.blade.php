@@ -1,6 +1,6 @@
 @extends('layouts.template')
 
-@section('title', 'Kategori')
+@section('title', 'Laporan Transaksi Masuk')
 
 @section('content')
 
@@ -8,7 +8,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Kategori Barang</h1>
+                    <h1>Laporan Transaksi Masuk</h1>
                 </div>
 {{--                <div class="col-sm-6">--}}
 {{--                    <ol class="breadcrumb float-sm-right">--}}
@@ -26,11 +26,10 @@
         <!-- Default box -->
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Kategori Barang</h3>
+                <h3 class="card-title">Laporan Transaksi Masuk</h3>
             </div>
             <div class="card-body">
-                <a href="{{url('kategori/create')}}" class="btn btn-sm btn-success my-2">Tambah Data</a>
-                <form action="{{url('kategori')}}" method="get">
+                <form action="{{url('laporanmasuk')}}" method="get">
                     <div class="input-group mb-3 w-25">
                         <input type="text" name="search" class="form-control" placeholder="Search"
                                value="{{request()->search}}">
@@ -42,25 +41,30 @@
                 <table id="example1" class="table table-bordered table-striped">
                     <thead>
                     <tr>
-                        <th>Kode</th>
-                        <th>Nama</th>
-                        <th>Action</th>
+                        <th>Tanggal</th>
+                        <th>ID Transaksi</th>
+                        <th>ID Barang</th>
+                        <th>Kode Barang</th>
+                        <th>Nama Barang</th>
+                        <th>Kategori</th>
+                        <th>Pemasok</th>
+                        <th>Jumlah</th>
+                        <th>User</th>
                     </tr>
                     </thead>
                     <tbody>
                     @foreach($data as $row)
                         <tr>
                             <input type="hidden" class="code" value="{{$row->kode}}">
-                            <td>{{$row->kode}}</td>
-                            <td>{{$row->nama}}</td>
-                            <td>
-                                <a href="{{route('kategori.edit', $row->id)}}" class="btn btn-primary btn-sm">Edit</a>
-                                <form action="{{route('kategori.destroy', $row->id)}}" method="post" class="delete d-inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="btn btn-danger btn-sm">Delete</button>
-                                </form>
-                            </td>
+                            <td>{{$row->tanggal}}</td>
+                            <td>{{$row->id_transaksi}}</td>
+                            <td>{{$row->id_barang}}</td>
+                            <td>{{$row->barang->kode}}</td>
+                            <td>{{$row->barang->nama}}</td>
+                            <td>{{$row->barang->kategori->nama}}</td>
+                            <td>{{$row->barang->pemasok->nama}}</td>
+                            <td>{{$row->qty}}</td>
+                            <td>{{$row->id_user}}</td>
                         </tr>
                     @endforeach
                     </tbody>
@@ -78,24 +82,9 @@
 @endpush
 
 @push('scripts')
-<script>
-    $('.delete').submit(function () {
-        Swal.fire({
-            title: 'Apakah anda yakin?',
-            text: "Setelah dihapus, Anda tidak dapat memulihkan Data ini lagi!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6', // blue
-            cancelButtonColor: '#d33', // red
-            confirmButtonText: 'Yes, delete it!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                this.submit();
-            }
-        })
-        return false;
-    });
-</script>
 
+    {{--    <script>--}}
+    {{--        alert('Selamat Datang');--}}
+    {{--    </script>--}}
 
 @endpush
