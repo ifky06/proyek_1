@@ -56,3 +56,7 @@ Route::resource('riwayat', RiwayatController::class);
 Route::get('export/barang', [BarangController::class, 'export']);
 Route::post('import/barang', [BarangController::class, 'import']);
 Route::get('import/barang/template', [BarangController::class, 'template']);
+
+Route::get('/testlogin', function () {
+    return view('auth.testlogin');
+});

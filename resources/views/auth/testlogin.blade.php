@@ -21,7 +21,7 @@
                 <div class="login-logo">
                     <a href="../../index2.html"><b>Kios</b> Sahabat Tani</a>
                 </div>
-                <div class="card border-0">
+                <div class="card bg-transparent border-0">
                     <div class="card-body ">
                     <p class="login-box-msg">Masukkan Username dan Password</p>
 
