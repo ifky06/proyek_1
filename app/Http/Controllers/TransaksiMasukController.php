@@ -45,6 +45,7 @@ class TransaksiMasukController extends Controller
 
         TransaksiMasuk::create([
             'qty' => $payment['qty'],
+            'id_users' => auth()->user()->id,
         ]);
 
         $transaksi_id = TransaksiMasuk::latest()->first()->id;

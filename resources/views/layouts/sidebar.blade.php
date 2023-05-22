@@ -10,13 +10,25 @@
     <div class="sidebar">
         <!-- Sidebar user (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-            <div class="image">
-                <img src="{{asset('assets/dist/img/user2-160x160.jpg')}}" width="160" class="img-circle elevation-2"
-                     alt="User Image">
-            </div>
+            {{--            <div class="image">--}}
+            {{--                <img src="{{asset('assets/dist/img/user2-160x160.jpg')}}" width="160" class="img-circle elevation-2"--}}
+            {{--                     alt="User Image">--}}
+            {{--            </div>--}}
             <div class="info">
                 {{--          <a href="#" class="d-block">{{Auth::user()->username}}</a>--}}
-                <a href="#" class="d-block">User</a>
+                <a href="#" class="d-block">
+                    <i class="fas fa-user mx-1"></i>
+                    {{Auth::user()->username}} <span style="font-weight: bold"> [
+                    @if(Auth::user()->role == 0)
+                            Owner
+                        @elseif(Auth::user()->role == 1)
+                            Admin
+                        @elseif(Auth::user()->role == 2)
+                            Kasir
+                        @endif
+                    ]
+                    </span>
+                </a>
             </div>
         </div>
 
@@ -36,14 +48,16 @@
                         </p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="{{ url('/') }}" class="nav-link">
-                        <i class="nav-icon fas fa-solid fa-users"></i>
-                        <p>
-                            Pengguna
-                        </p>
-                    </a>
-                </li>
+                @if(Auth::user()->role == 0)
+                    <li class="nav-item">
+                        <a href="{{ url('/user') }}" class="nav-link">
+                            <i class="nav-icon fas fa-solid fa-users"></i>
+                            <p>
+                                Pengguna
+                            </p>
+                        </a>
+                    </li>
+                @endif
                 <li class="nav-item">
                     <a href="{{ url('/pemasok') }}" class="nav-link">
                         <i class="nav-icon fas fa-solid fa-users"></i>
@@ -120,14 +134,16 @@
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="{{ url('/riwayat') }}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>
-                                    Riwayat
-                                </p>
-                            </a>
-                        </li>
+                        @if(Auth::user()->role != 2)
+                            <li class="nav-item">
+                                <a href="{{ url('/riwayat') }}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>
+                                        Riwayat
+                                    </p>
+                                </a>
+                            </li>
+                        @endif
                     </ul>
                 </li>
             </ul>

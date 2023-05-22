@@ -10,12 +10,12 @@
                 <div class="col-sm-6">
                     <h1>Kategori Barang</h1>
                 </div>
-{{--                <div class="col-sm-6">--}}
-{{--                    <ol class="breadcrumb float-sm-right">--}}
-{{--                        <li class="breadcrumb-item"><a href="#">Dashboard</a></li>--}}
-{{--                        <li class="breadcrumb-item active">Dashboard</li>--}}
-{{--                    </ol>--}}
-{{--                </div>--}}
+                {{--                <div class="col-sm-6">--}}
+                {{--                    <ol class="breadcrumb float-sm-right">--}}
+                {{--                        <li class="breadcrumb-item"><a href="#">Dashboard</a></li>--}}
+                {{--                        <li class="breadcrumb-item active">Dashboard</li>--}}
+                {{--                    </ol>--}}
+                {{--                </div>--}}
             </div>
         </div><!-- /.container-fluid -->
     </section>
@@ -44,7 +44,9 @@
                     <tr>
                         <th>Kode</th>
                         <th>Nama</th>
-                        <th>Action</th>
+                        @if(Auth::user()->role != 2)
+                            <th>Action</th>
+                        @endif
                     </tr>
                     </thead>
                     <tbody>
@@ -53,14 +55,18 @@
                             <input type="hidden" class="code" value="{{$row->kode}}">
                             <td>{{$row->kode}}</td>
                             <td>{{$row->nama}}</td>
-                            <td>
-                                <a href="{{route('kategori.edit', $row->id)}}" class="btn btn-primary btn-sm">Edit</a>
-                                <form action="{{route('kategori.destroy', $row->id)}}" method="post" class="delete d-inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="btn btn-danger btn-sm">Delete</button>
-                                </form>
-                            </td>
+                            @if(Auth::user()->role != 2)
+                                <td>
+                                    <a href="{{route('kategori.edit', $row->id)}}"
+                                       class="btn btn-primary btn-sm">Edit</a>
+                                    <form action="{{route('kategori.destroy', $row->id)}}" method="post"
+                                          class="delete d-inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-danger btn-sm">Delete</button>
+                                    </form>
+                                </td>
+                            @endif
                         </tr>
                     @endforeach
                     </tbody>
@@ -78,24 +84,23 @@
 @endpush
 
 @push('scripts')
-<script>
-    $('.delete').submit(function () {
-        Swal.fire({
-            title: 'Apakah anda yakin?',
-            text: "Setelah dihapus, Anda tidak dapat memulihkan Data ini lagi!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6', // blue
-            cancelButtonColor: '#d33', // red
-            confirmButtonText: 'Yes, delete it!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                this.submit();
-            }
-        })
-        return false;
-    });
-</script>
-
+    <script>
+        $('.delete').submit(function () {
+            Swal.fire({
+                title: 'Apakah anda yakin?',
+                text: "Setelah dihapus, Anda tidak dapat memulihkan Data ini lagi!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6', // blue
+                cancelButtonColor: '#d33', // red
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.submit();
+                }
+            })
+            return false;
+        });
+    </script>
 
 @endpush

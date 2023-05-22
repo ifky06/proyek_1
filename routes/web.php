@@ -26,37 +26,39 @@ use App\Http\Controllers\Dashboard;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Auth::routes();
 Route::middleware(['auth'])->group(function () {
-    Route::get('/', function () {
-        return view('dashboard');
-    });
+    Route::get('/', [Dashboard::class, 'index']);
 
     Route::middleware(['owner'])->group(function(){
-        Route::resource('barang', BarangController::class);
+        Route::resource('user', UserController::class);
+    });
+
+    Route::middleware(['ownerAdmin'])->group(function(){
         Route::resource('pemasok', PemasokController::class);
         Route::resource('kategori',KategoriController::class);
         Route::resource('satuan', SatuanController::class);
+        Route::resource('barang', BarangController::class);
+        Route::resource('riwayat', RiwayatController::class);
+        Route::post('import/barang', [BarangController::class, 'import']);
     });
-});
-Auth::routes();
+
+    Route::get('/barang', [BarangController::class, 'index']);
+    Route::get('/pemasok', [PemasokController::class, 'index']);
+    Route::get('/kategori', [KategoriController::class, 'index']);
+    Route::get('/satuan', [SatuanController::class, 'index']);
+
 Route::get('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout']);
-
-Route::resource('user', UserController::class);
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/', [Dashboard::class, 'index']);
 
 Route::resource('kasir', TransaksiKeluarController::class);
 Route::resource('transaksimasuk', TransaksiMasukController::class);
 Route::resource('laporanmasuk', DetailTransaksiMasukController::class);
 Route::resource('laporankeluar', DetailTransaksiKeluarController::class);
-Route::resource('riwayat', RiwayatController::class);
 
 Route::get('export/barang', [BarangController::class, 'export']);
-Route::post('import/barang', [BarangController::class, 'import']);
 Route::get('import/barang/template', [BarangController::class, 'template']);
-
-Route::get('/testlogin', function () {
-    return view('auth.testlogin');
 });
+
+//Route::get('/testlogin', function () {
+//    return view('auth.testlogin');
+//});

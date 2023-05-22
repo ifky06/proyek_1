@@ -48,6 +48,7 @@ class TransaksiKeluarController extends Controller
             'grand_total' => $payment['total'],
             'bayar' => $payment['bayar'],
             'kembalian' => $payment['kembali'],
+            'id_users' => auth()->user()->id,
         ]);
 
         $transaksi_id = Transaksi_Keluar::latest()->first()->id;

@@ -163,6 +163,8 @@ class BarangController extends Controller
 
         Excel::import(new BarangImport, $request->file('file'));
 
+        Riwayat::add('import', $this->location, 'semua');
+
         return redirect('barang')
             ->with('success', 'Data barang berhasil diimport');
     }

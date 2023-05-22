@@ -39,7 +39,9 @@
                     <tr>
                         <th>Kode</th>
                         <th>Nama Satuan</th>
+                        @if(Auth::user()->role != 2)
                         <th>Action</th>
+                        @endif
                     </tr>
                     </thead>
                     <tbody>
@@ -47,6 +49,7 @@
                         <tr>
                             <td>{{$row->kode}}</td>
                             <td>{{$row->satuan}}</td>
+                            @if(Auth::user()->role != 2)
                             <td>
                                 <a href="{{route('satuan.edit', $row->id)}}" class="btn btn-primary btn-sm">Edit</a>
                                 <form action="{{route('satuan.destroy', $row->id)}}" method="post" class="delete d-inline">
@@ -54,6 +57,8 @@
                                     @method('DELETE')
                                     <button class="btn btn-danger btn-sm">Delete</button>
                                 </form>
+                            </td>
+                            @endif
                         </tr>
                     @endforeach
                     </tbody>

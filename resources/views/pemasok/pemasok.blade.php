@@ -10,12 +10,12 @@
                 <div class="col-sm-6">
                     <h1>Pemasok</h1>
                 </div>
-{{--                <div class="col-sm-6">--}}
-{{--                    <ol class="breadcrumb float-sm-right">--}}
-{{--                        <li class="breadcrumb-item"><a href="#">Dashboard</a></li>--}}
-{{--                        <li class="breadcrumb-item active">Dashboard</li>--}}
-{{--                    </ol>--}}
-{{--                </div>--}}
+                {{--                <div class="col-sm-6">--}}
+                {{--                    <ol class="breadcrumb float-sm-right">--}}
+                {{--                        <li class="breadcrumb-item"><a href="#">Dashboard</a></li>--}}
+                {{--                        <li class="breadcrumb-item active">Dashboard</li>--}}
+                {{--                    </ol>--}}
+                {{--                </div>--}}
             </div>
         </div><!-- /.container-fluid -->
     </section>
@@ -46,7 +46,9 @@
                         <th>Nama</th>
                         <th>Alamat</th>
                         <th>No.Telp</th>
-                        <th>Action</th>
+                        @if(Auth::user()->role != 2)
+                            <th>Action</th>
+                        @endif
                     </tr>
                     </thead>
                     <tbody>
@@ -57,13 +59,18 @@
                             <td>{{$row->nama}}</td>
                             <td>{{$row->alamat}}</td>
                             <td>{{$row->no_tlp}}</td>
-                            <td>
-                                <a href="{{route('pemasok.edit', $row->id)}}" class="btn btn-primary btn-sm">Edit</a>
-                                <form action="{{route('pemasok.destroy', $row->id)}}" method="post" class="detele d-inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="btn btn-danger btn-sm">Delete</button>
-                                </form></td>
+                            @if(Auth::user()->role != 2)
+                                <td>
+                                    <a href="{{route('pemasok.edit', $row->id)}}"
+                                       class="btn btn-primary btn-sm">Edit</a>
+                                    <form action="{{route('pemasok.destroy', $row->id)}}" method="post"
+                                          class="detele d-inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-danger btn-sm">Delete</button>
+                                    </form>
+                                </td>
+                            @endif
                         </tr>
                     @endforeach
                     </tbody>

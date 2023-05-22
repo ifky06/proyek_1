@@ -19,7 +19,7 @@ class Riwayat extends Model
             'jenis' => $type,
             'lokasi' => $location,
             'keterangan' => 'Melakukan '.$type.' '.$location.' dengan kode '.$code.' di '.$location,
-//            'id_user' => auth()->user()->id
+            'id_user' => auth()->user()->id,
         ];
         return self::create($data);
     }

@@ -101,6 +101,15 @@
         )
     </script>
 @endif
+@if(session('accessDenied'))
+    <script>
+        Swal.fire(
+            'Access Denied!',
+            '{{session('accessDenied')}}',
+            'error'
+        )
+    </script>
+@endif
 
 
 @stack('scripts')

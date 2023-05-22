@@ -104,7 +104,7 @@
                             @foreach ($barangCepatHabis as $item)
                                 <li class="item">
                                     <div class="product-info">
-                                        <p class="product-title">{{$item->barang->nama}}
+                                        <p class="product-title">{{$item->barang->kode}} - {{$item->barang->nama}}
                                             <span class="badge badge-info float-right">{{$item->total}}</span></p>
                                     </div>
                                 </li>
@@ -121,7 +121,7 @@
                             @foreach ($barangBaruMasuk as $item)
                                 <li class="item">
                                     <div class="product-info">
-                                        <p class="product-title pb-0 mb-0">{{$item->barang->nama}}</p>
+                                        <p class="product-title pb-0 mb-0">{{$item->barang->kode}} - {{$item->barang->nama}}</p>
                                         <span class="m-0 p-0">{{$item->tanggal}}</span>
                                     </div>
                                 </li>
