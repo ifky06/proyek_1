@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="{{asset ('assets/dist/css/adminlte.min.css')}}">
 </head>
 <body class="hold-transition login-page">
-    <div class="row">
+    <div class="row border border-success">
         <div class="col-6">
             <div class="login-box w-100" style="margin-top: 50px">
                 <div class="login-logo">
@@ -64,6 +64,9 @@
         height: 500px; 
         background-image: url('{{asset ('assets/banner.jpg')}}'); 
         background-size: cover;
+    }
+    .card {
+        box-shadow: none;
     }
 </style>
 <!-- jQuery -->

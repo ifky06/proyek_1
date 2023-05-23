@@ -21,7 +21,7 @@
                 <div class="login-logo">
                     <a href="../../index2.html"><b>Kios</b> Sahabat Tani</a>
                 </div>
-                <div class="card border-0">
+                <div class="card bg-transparent border-0">
                     <div class="card-body ">
                     <p class="login-box-msg">Masukkan Username dan Password</p>
 
@@ -64,6 +64,19 @@
         height: 500px; 
         background-image: url('{{asset ('assets/banner.jpg')}}'); 
         background-size: cover;
+    }
+    .card {
+        box-shadow: none;
+    }
+    .row {
+        border: solid;
+        border-width: 2px;
+    }
+    .login-page {
+        background-color: #ffffff;
+    }
+    .login-box-msg {
+        margin-bottom: 20px;
     }
 </style>
 <!-- jQuery -->
