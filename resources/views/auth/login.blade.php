@@ -62,7 +62,7 @@
     .banner {
         width: 450px; 
         height: 500px; 
-        background-image: url('{{asset ('assets/banner.jpg')}}'); 
+        background-image: url('{{asset ('assets/banner2.jpeg')}}'); 
         background-size: cover;
     }
     .card {
@@ -70,7 +70,7 @@
     }
     .row {
         border: solid;
-        border-width: 2px;
+        border-width: 3px;
     }
     .login-page {
         background-color: #ffffff;
