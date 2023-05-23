@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\TransaksiKeluarExport;
 use App\Models\Barang;
 use App\Models\Detail_transaksi_keluar;
 use App\Models\Transaksi_Keluar;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TransaksiKeluarController extends Controller
 {
@@ -71,6 +73,10 @@ class TransaksiKeluarController extends Controller
         return response()->json(['success' => true, 'message' => 'Transaksi berhasil',]);
     }
 
+    public function export()
+    {
+        return Excel::download(new TransaksiKeluarExport, 'Transaksi_keluar.xlsx');
+    }
     /**
      * Display the specified resource.
      *

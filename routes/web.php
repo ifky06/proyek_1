@@ -41,6 +41,7 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('barang', BarangController::class);
         Route::resource('riwayat', RiwayatController::class);
         Route::post('import/barang', [BarangController::class, 'import']);
+        Route::get('export/riwayat', [RiwayatController::class, 'export']);
     });
 
     Route::get('/barang', [BarangController::class, 'index']);
@@ -57,6 +58,10 @@ Route::resource('laporankeluar', DetailTransaksiKeluarController::class);
 
 Route::get('export/barang', [BarangController::class, 'export']);
 Route::get('import/barang/template', [BarangController::class, 'template']);
+Route::get('export/detailtransaksikeluar', [DetailTransaksiKeluarController::class, 'export']);
+Route::get('export/transaksikeluar', [TransaksiKeluarController::class, 'export']);
+Route::get('export/detailtransaksimasuk', [DetailTransaksiMasukController::class, 'export']);
+Route::get('export/transaksimasuk', [TransaksiMasukController::class, 'export']);
 });
 
 //Route::get('/testlogin', function () {

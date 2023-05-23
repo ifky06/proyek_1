@@ -23,4 +23,8 @@ class Riwayat extends Model
         ];
         return self::create($data);
     }
+
+    public function user(){
+        return $this->belongsTo(User::class, 'id_user', 'id');
+    }
 }

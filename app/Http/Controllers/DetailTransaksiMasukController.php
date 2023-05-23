@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\DetailTransaksiMasukExport;
 use App\Models\Barang;
 use App\Models\DetailTransaksiMasuk;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DetailTransaksiMasukController extends Controller
 {
@@ -18,12 +20,25 @@ class DetailTransaksiMasukController extends Controller
         if ($request->has('search')){
             $data=DetailTransaksiMasuk::where('tanggal','like',"%{$request->search}%")
                 ->paginate(5);
+            foreach ($data as $key => $value) {
+                $value->id_user = $value->transaksiMasuk->user->username;
+                unset($value->user);
+            }
             return view('detailmasuk.detailmasuk')
                 ->with('data',$data);
         }
         $data=DetailTransaksiMasuk::paginate(5);
+        foreach ($data as $key => $value) {
+            $value->id_user = $value->transaksiMasuk->user->username;
+            unset($value->user);
+        }
         return view('detailmasuk.detailmasuk')
             ->with('data',$data);
+    }
+
+    public function export()
+    {
+        return Excel::download(new DetailTransaksiMasukExport, 'detail_transaksi_masuk.xlsx');
     }
 
     /**

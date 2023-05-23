@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\RiwayatExport;
 use App\Models\Riwayat;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class RiwayatController extends Controller
 {
@@ -21,12 +23,25 @@ class RiwayatController extends Controller
                 ->orWhere('keterangan','like',"%{$request->search}%")
                 ->orWhere('id_user','like',"%{$request->search}%")
                 ->paginate(5);
+            foreach ($data as $key => $value) {
+                $value->id_user = $value->user->username;
+                unset($value->user);
+            }
             return view('riwayat')
                 ->with('data',$data);
         }
         $data=Riwayat::paginate(5);
+        foreach ($data as $key => $value) {
+            $value->id_user = $value->user->username;
+            unset($value->user);
+        }
         return view('riwayat')
             ->with('data',$data);
+    }
+
+    public function export()
+    {
+        return Excel::download(new RiwayatExport, 'riwayat_perubahan_data.xlsx');
     }
 
     /**

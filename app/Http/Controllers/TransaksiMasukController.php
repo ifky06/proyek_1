@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\TransaksiMasukExport;
 use App\Models\Barang;
 use App\Models\DetailTransaksiMasuk;
 use App\Models\TransaksiMasuk;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TransaksiMasukController extends Controller
 {
@@ -65,6 +67,11 @@ class TransaksiMasukController extends Controller
         }
 
         return response()->json(['success' => true, 'message' => 'Transaksi berhasil',]);
+    }
+
+    public function export()
+    {
+        return Excel::download(new TransaksiMasukExport, 'transaksi_masuk.xlsx');
     }
 
     /**

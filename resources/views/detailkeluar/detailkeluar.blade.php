@@ -29,6 +29,8 @@
                 <h3 class="card-title">Laporan Transaksi Keluar</h3>
             </div>
             <div class="card-body">
+                <a href="{{url('export/transaksikeluar')}}" class="btn btn-sm btn-success my-2">Export Transaksi Keluar</a>
+                <a href="{{url('export/detailtransaksikeluar')}}" class="btn btn-sm btn-success my-2">Export Detail Transaksi Keluar</a>
                 <form action="{{url('laporankeluar')}}" method="get">
                     <div class="input-group mb-3 w-25">
                         <input type="text" name="search" class="form-control" placeholder="Search"

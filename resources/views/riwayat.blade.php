@@ -29,6 +29,7 @@
                 <h3 class="card-title">Riwayat</h3>
             </div>
             <div class="card-body">
+                <a href="{{url('export/riwayat')}}" class="btn btn-sm btn-success my-2">Export Riwayat</a>
                 <form action="{{url('riwayat')}}" method="get">
                     <div class="input-group mb-3 w-25">
                         <input type="text" name="search" class="form-control" placeholder="Search"

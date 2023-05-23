@@ -9,7 +9,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Barang</h1>
+                    <h1>Data Barang</h1>
                 </div>
                 {{--                <div class="col-sm-6">--}}
                 {{--                    <ol class="breadcrumb float-sm-right">--}}
@@ -55,6 +55,9 @@
         @endif
         <!-- Default box -->
         <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Data Barang</h3>
+            </div>
             <div class="card-body">
                 @if(Auth::user()->role != 2)
                     <a href="{{url('barang/create')}}" class="btn btn-sm btn-success my-2">Tambah Data</a>

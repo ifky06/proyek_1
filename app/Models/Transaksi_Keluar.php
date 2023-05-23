@@ -20,4 +20,8 @@ class Transaksi_Keluar extends Model
     public function detailTransaksiKeluar(){
         return $this->hasMany(Detail_transaksi_keluar::class, 'id_transaksi', 'id');
     }
+
+    public function user(){
+        return $this->belongsTo(User::class, 'id_users', 'id');
+    }
 }
