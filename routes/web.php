@@ -11,8 +11,6 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\TransaksiKeluarController;
 use App\Http\Controllers\TransaksiMasukController;
-use App\Models\DetailTransaksiMasuk;
-use App\Models\Detail_transaksi_keluar;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Dashboard;
 
@@ -55,6 +53,8 @@ Route::resource('kasir', TransaksiKeluarController::class);
 Route::resource('transaksimasuk', TransaksiMasukController::class);
 Route::resource('laporanmasuk', DetailTransaksiMasukController::class);
 Route::resource('laporankeluar', DetailTransaksiKeluarController::class);
+Route::get('/laporankeluar/{id}/detaillaporankeluar', [DetailTransaksiKeluarController::class, 'detail']);
+Route::get('/laporanmasuk/{id}/detaillaporanmasuk', [DetailTransaksiMasukController::class, 'detail']);
 
 Route::get('export/barang', [BarangController::class, 'export']);
 Route::get('import/barang/template', [BarangController::class, 'template']);

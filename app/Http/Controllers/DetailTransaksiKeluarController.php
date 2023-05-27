@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\DetailTransaksiKeluarExport;
 use App\Models\Detail_transaksi_keluar;
+use App\Models\Transaksi_Keluar;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -17,27 +18,37 @@ class DetailTransaksiKeluarController extends Controller
     public function index(Request $request)
     {
         if ($request->has('search')){
-            $data=Detail_transaksi_keluar::where('tanggal','like',"%{$request->search}%")
+            $data=Transaksi_Keluar::where('tanggal','like',"%{$request->search}%")
                 ->paginate(5);
             foreach ($data as $key => $value) {
-                $value->id_user = $value->transaksiKeluar->user->username;
+                $value->id_users = $value->user->username;
                 unset($value->user);
             }
-            return view('detailkeluar.detailkeluar')
+            return view('detailkeluar.laporankeluar')
                 ->with('data',$data);
         }
-        $data=Detail_transaksi_keluar::paginate(5);
+        $data=Transaksi_Keluar::paginate(5);
         foreach ($data as $key => $value) {
-            $value->id_user = $value->transaksiKeluar->user->username;
+            $value->id_users = $value->user->username;
             unset($value->user);
         }
-        return view('detailkeluar.detailkeluar')
+        return view('detailkeluar.laporankeluar')
             ->with('data',$data);
     }
 
     public function export()
     {
         return Excel::download(new DetailTransaksiKeluarExport, 'detail_transaksi_keluar.xlsx');
+    }
+
+
+    public function detail($id)
+    { 
+        $tk = Transaksi_Keluar::find($id);
+        $detail = Detail_transaksi_keluar::where('id_transaksi', $id)->get();
+        return view('detailkeluar.detailkeluar')
+            ->with('tk', $tk)
+            ->with('detail',$detail);
     }
 
     /**
