@@ -39,11 +39,15 @@ class RiwayatController extends Controller
             ->with('data',$data);
     }
 
-    public function export()
+    public function exportAll()
     {
-        return Excel::download(new RiwayatExport, 'riwayat_perubahan_data.xlsx');
+        return Excel::download(new RiwayatExport(0,0), 'riwayat_perubahan_data.xlsx');
     }
-
+    public function export(Request $request){
+        $start = $request->start;
+        $end = $request->end;
+        return Excel::download(new RiwayatExport($start,$end), 'riwayat_perubahan_data_'.$start.'_'.$end.'.xlsx');
+    }
     /**
      * Show the form for creating a new resource.
      *

@@ -22,7 +22,42 @@
 
     <!-- Main content -->
     <section class="content">
-
+        <div class="modal fade" id="export" tabindex="-1" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Export Riwayat Perubahan Data</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="exportForm" method="post" action="{{url('export/riwayat')}}"
+                              enctype="multipart/form-data">
+                            @csrf
+                            <label>Tanggal Transaksi</label>
+                            <div class="form-row">
+                                <div class="form-group col">
+                                    <input type="date" class="form-control" name="start">
+                                </div>
+                                <div class="form-group col-1 mt-1 text-center">
+                                    <label>-----</label>
+                                </div>
+                                <div class="form-group col">
+                                    <input type="date" class="form-control" name="end">
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <a href="{{url('export/riwayat')}}" id="exportAll" class="btn btn-sm btn-success">Export Semua</a>
+                                <button type="submit" class="btn btn-sm btn-primary" id="importButton">Export
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- Default box -->
         <div class="card">
             <div class="card-header">

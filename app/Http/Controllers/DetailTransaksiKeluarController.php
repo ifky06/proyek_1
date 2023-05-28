@@ -36,14 +36,21 @@ class DetailTransaksiKeluarController extends Controller
             ->with('data',$data);
     }
 
-    public function export()
+    public function exportAll()
     {
-        return Excel::download(new DetailTransaksiKeluarExport, 'detail_transaksi_keluar.xlsx');
+        return Excel::download(new DetailTransaksiKeluarExport(0,0), 'detail_transaksi_keluar.xlsx');
+    }
+
+    public function export(Request $request)
+    {
+        $start = $request->start;
+        $end = $request->end;
+        return Excel::download(new DetailTransaksiKeluarExport($start,$end), 'detail_transaksi_keluar_'.$start.'_'.$end.'.xlsx');
     }
 
 
     public function detail($id)
-    { 
+    {
         $tk = Transaksi_Keluar::find($id);
         $detail = Detail_transaksi_keluar::where('id_transaksi', $id)->get();
         return view('detailkeluar.detailkeluar')

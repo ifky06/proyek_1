@@ -11,12 +11,24 @@ class DetailTransaksiKeluarExport implements FromCollection, WithHeadings
     /**
     * @return \Illuminate\Support\Collection
     */
+    public function __construct($start,$end)
+    {
+        $this->start = $start;
+        $this->end = $end;
+    }
     public function collection()
     {
-//        return Detail_transaksi_keluar::all();
-        $data = Detail_transaksi_keluar::with('barang','transaksiKeluar','transaksiKeluar.user')
-            ->selectRaw('tanggal,id_transaksi,id_barang,qty,grandtotal')
-            ->get();
+        if ($this->start != 0 && $this->end != 0){
+            $this->end = date('Y-m-d', strtotime($this->end . ' +1 day'));
+            $data = Detail_transaksi_keluar::with('barang','transaksiKeluar','transaksiKeluar.user')
+                ->selectRaw('tanggal,id_transaksi,id_barang,qty,grandtotal')
+                ->whereBetween('created_at', [$this->start, $this->end])
+                ->get();
+            }else{
+                $data = Detail_transaksi_keluar::with('barang','transaksiKeluar','transaksiKeluar.user')
+                ->selectRaw('tanggal,id_transaksi,id_barang,qty,grandtotal')
+                ->get();
+            }
         foreach ($data as $key => $value) {
             $value->id_transaksi = $value->barang->kode;
             $value->id_barang = $value->barang->nama;

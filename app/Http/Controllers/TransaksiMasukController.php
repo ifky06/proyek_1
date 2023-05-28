@@ -69,9 +69,15 @@ class TransaksiMasukController extends Controller
         return response()->json(['success' => true, 'message' => 'Transaksi berhasil',]);
     }
 
-    public function export()
+    public function exportAll()
     {
-        return Excel::download(new TransaksiMasukExport, 'transaksi_masuk.xlsx');
+        return Excel::download(new TransaksiMasukExport(0,0), 'transaksi_masuk.xlsx');
+    }
+
+    public function export(Request $request){
+        $start = $request->start;
+        $end = $request->end;
+        return Excel::download(new TransaksiMasukExport($start,$end), 'Transaksi_masuk_'.$start.'_'.$end.'.xlsx');
     }
 
     /**

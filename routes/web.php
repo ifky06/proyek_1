@@ -39,7 +39,8 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('barang', BarangController::class);
         Route::resource('riwayat', RiwayatController::class);
         Route::post('import/barang', [BarangController::class, 'import']);
-        Route::get('export/riwayat', [RiwayatController::class, 'export']);
+        Route::get('export/riwayat', [RiwayatController::class, 'exportAll']);
+        Route::post('export/riwayat', [RiwayatController::class, 'export']);
     });
 
     Route::get('/barang', [BarangController::class, 'index']);
@@ -58,10 +59,14 @@ Route::get('/laporanmasuk/{id}/detaillaporanmasuk', [DetailTransaksiMasukControl
 
 Route::get('export/barang', [BarangController::class, 'export']);
 Route::get('import/barang/template', [BarangController::class, 'template']);
-Route::get('export/detailtransaksikeluar', [DetailTransaksiKeluarController::class, 'export']);
-Route::get('export/transaksikeluar', [TransaksiKeluarController::class, 'export']);
-Route::get('export/detailtransaksimasuk', [DetailTransaksiMasukController::class, 'export']);
-Route::get('export/transaksimasuk', [TransaksiMasukController::class, 'export']);
+Route::get('export/detailtransaksikeluar', [DetailTransaksiKeluarController::class, 'exportAll']);
+Route::post('export/detailtransaksikeluar', [DetailTransaksiKeluarController::class, 'export']);
+Route::get('export/transaksikeluar', [TransaksiKeluarController::class, 'exportAll']);
+Route::post('export/transaksikeluar', [TransaksiKeluarController::class, 'export']);
+Route::get('export/detailtransaksimasuk', [DetailTransaksiMasukController::class, 'exportAll']);
+Route::post('export/detailtransaksimasuk', [DetailTransaksiMasukController::class, 'export']);
+Route::get('export/transaksimasuk', [TransaksiMasukController::class, 'exportAll']);
+Route::post('export/transaksimasuk', [TransaksiMasukController::class, 'export']);
 });
 
 //Route::get('/testlogin', function () {
