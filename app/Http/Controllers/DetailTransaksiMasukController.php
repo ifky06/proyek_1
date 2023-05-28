@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exports\DetailTransaksiMasukExport;
 use App\Models\Barang;
 use App\Models\DetailTransaksiMasuk;
+use App\Models\TransaksiMasuk;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -18,27 +19,36 @@ class DetailTransaksiMasukController extends Controller
     public function index(Request $request)
     {
         if ($request->has('search')){
-            $data=DetailTransaksiMasuk::where('tanggal','like',"%{$request->search}%")
+            $data=TransaksiMasuk::where('tanggal','like',"%{$request->search}%")
                 ->paginate(5);
             foreach ($data as $key => $value) {
-                $value->id_user = $value->transaksiMasuk->user->username;
+                $value->id_user = $value->user->username;
                 unset($value->user);
             }
-            return view('detailmasuk.detailmasuk')
+            return view('detailmasuk.laporanmasuk')
                 ->with('data',$data);
         }
-        $data=DetailTransaksiMasuk::paginate(5);
+        $data=TransaksiMasuk::paginate(5);
         foreach ($data as $key => $value) {
-            $value->id_user = $value->transaksiMasuk->user->username;
+            $value->id_user = $value->user->username;
             unset($value->user);
         }
-        return view('detailmasuk.detailmasuk')
+        return view('detailmasuk.laporanmasuk')
             ->with('data',$data);
     }
 
     public function export()
     {
         return Excel::download(new DetailTransaksiMasukExport, 'detail_transaksi_masuk.xlsx');
+    }
+
+    public function detail($id)
+    { 
+        $tm = TransaksiMasuk::find($id);
+        $detail = DetailTransaksiMasuk::where('id_transaksi', $id)->get();
+        return view('detailmasuk.detailmasuk')
+            ->with('tm', $tm)
+            ->with('detail',$detail);
     }
 
     /**
