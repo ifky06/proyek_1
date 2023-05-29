@@ -38,12 +38,14 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('satuan', SatuanController::class);
         Route::resource('barang', BarangController::class);
         Route::resource('riwayat', RiwayatController::class);
+        Route::post('riwayat/data', [RiwayatController::class, 'data']);
         Route::post('import/barang', [BarangController::class, 'import']);
         Route::get('export/riwayat', [RiwayatController::class, 'exportAll']);
         Route::post('export/riwayat', [RiwayatController::class, 'export']);
     });
 
     Route::get('/barang', [BarangController::class, 'index']);
+    Route::post('/barang/data', [BarangController::class, 'data']);
     Route::get('/pemasok', [PemasokController::class, 'index']);
     Route::get('/kategori', [KategoriController::class, 'index']);
     Route::get('/satuan', [SatuanController::class, 'index']);
@@ -53,7 +55,9 @@ Route::get('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout
 Route::resource('kasir', TransaksiKeluarController::class);
 Route::resource('transaksimasuk', TransaksiMasukController::class);
 Route::resource('laporanmasuk', DetailTransaksiMasukController::class);
+Route::post('laporanmasuk/data', [DetailTransaksiMasukController::class, 'data']);
 Route::resource('laporankeluar', DetailTransaksiKeluarController::class);
+Route::post('laporankeluar/data', [DetailTransaksiKeluarController::class, 'data']);
 Route::get('/laporankeluar/{id}/detaillaporankeluar', [DetailTransaksiKeluarController::class, 'detail']);
 Route::get('/laporanmasuk/{id}/detaillaporanmasuk', [DetailTransaksiMasukController::class, 'detail']);
 

@@ -10,12 +10,6 @@
                 <div class="col-sm-6">
                     <h1>Riwayat</h1>
                 </div>
-{{--                <div class="col-sm-6">--}}
-{{--                    <ol class="breadcrumb float-sm-right">--}}
-{{--                        <li class="breadcrumb-item"><a href="#">Dashboard</a></li>--}}
-{{--                        <li class="breadcrumb-item active">Dashboard</li>--}}
-{{--                    </ol>--}}
-{{--                </div>--}}
             </div>
         </div><!-- /.container-fluid -->
     </section>
@@ -64,17 +58,8 @@
                 <h3 class="card-title">Riwayat</h3>
             </div>
             <div class="card-body">
-                <a href="{{url('export/riwayat')}}" class="btn btn-sm btn-success my-2">Export Riwayat</a>
-                <form action="{{url('riwayat')}}" method="get">
-                    <div class="input-group mb-3 w-25">
-                        <input type="text" name="search" class="form-control" placeholder="Search"
-                               value="{{request()->search}}">
-                        <div class="input-group-append">
-                            <button class="btn btn-primary" type="submit">Search</button>
-                        </div>
-                    </div>
-                </form>
-                <table id="example1" class="table table-bordered table-striped">
+                <a href="#" class="btn btn-sm btn-success my-2" data-toggle="modal" data-target="#export">Export Riwayat</a>
+                <table class="table table-bordered table-striped" id="dataTable" >
                     <thead>
                     <tr>
                         <th>Tanggal</th>
@@ -85,19 +70,8 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($data as $row)
-                        <tr>
-                            <input type="hidden" class="code" value="{{$row->kode}}">
-                            <td>{{$row->tanggal}}</td>
-                            <td>{{$row->jenis}}</td>
-                            <td>{{$row->lokasi}}</td>
-                            <td>{{$row->keterangan}}</td>
-                            <td>{{$row->id_user}}</td>
-                        </tr>
-                    @endforeach
                     </tbody>
                 </table>
-                {{ $data->links() }}
             </div>
         </div>
         <!-- /.card -->
@@ -111,8 +85,30 @@
 
 @push('scripts')
 
-    {{--    <script>--}}
-    {{--        alert('Selamat Datang');--}}
-    {{--    </script>--}}
+    <script>
+        $(document).ready(function () {
+            $('#dataTable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: "{{url('riwayat/data')}}",
+                    dataType: 'json',
+                    type: 'POST',
+                },
+                columns: [
+                    {data: 'tanggal', name: 'tanggal', orderData: 0,
+                        render: function (data, type, row) {
+                            return row.tanggal.slice(0,10)
+                        },
+                    },
+                    {data: 'jenis', name: 'jenis'},
+                    {data: 'lokasi', name: 'lokasi'},
+                    {data: 'keterangan', name: 'keterangan'},
+                    {data: 'id_user', name: 'id_user'},
+                ]
+            });
+        });
+    </script>
+
 
 @endpush
