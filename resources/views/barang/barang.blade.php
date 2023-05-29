@@ -77,9 +77,10 @@
                         </div>
                     </div>
                 </form>
-                <table class="table table-bordered table-striped mb-3">
+                <table class="table table-bordered table-striped mb-3" id="dataTable">
                     <thead>
                     <tr>
+                        <th>No</th>
                         <th>Kode</th>
                         <th>Nama</th>
                         <th>Kategori</th>
@@ -93,32 +94,8 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($data as $row)
-                        <tr>
-                            <input type="hidden" class="code" value="{{$row->kode}}">
-                            <td>{{$row->kode}}</td>
-                            <td>{{$row->nama}}</td>
-                            <td>{{$row->kategori->nama}}</td>
-                            <td>{{$row->pemasok->nama}}</td>
-                            <td>{{$row->satuan->satuan}}</td>
-                            <td>Rp. <span class="harga">{{$row->harga}}</span></td>
-                            <td>{{$row->stok}}</td>
-                            @if(Auth::user()->role != 2)
-                                <td>
-                                    <a href="{{route('barang.edit', $row->id)}}" class="btn btn-primary btn-sm">Edit</a>
-                                    <form action="{{route('barang.destroy', $row->id)}}" method="post"
-                                          class="delete d-inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button class="btn btn-danger btn-sm">Delete</button>
-                                    </form>
-                                </td>
-                            @endif
-                        </tr>
-                    @endforeach
                     </tbody>
                 </table>
-                {{ $data->links() }}
             </div>
         </div>
         <!-- /.card -->
@@ -134,32 +111,60 @@
 @push('scripts')
     {{--    add delete confirmation alert--}}
     <script>
-        $('.delete').submit(function () {
-            Swal.fire({
-                title: 'Apakah anda yakin?',
-                text: "Setelah dihapus, Anda tidak dapat memulihkan Data ini lagi!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6', // blue
-                cancelButtonColor: '#d33', // red
-                confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    this.submit();
-                }
-            })
-            return false;
-        });
         // format number harga
         $(document).ready(function () {
-            // get all harga
+            $('#dataTable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: "{{ url('barang/data') }}",
+                    dataType: 'json',
+                    type: 'POST',
+                },
+                columns: [
+                    {data: 'number', name: 'number'},
+                    {data: 'kode', name: 'kode'},
+                    {data: 'nama', name: 'nama'},
+                    {data: 'id_kategori', name: 'id_kategori'},
+                    {data: 'id_pemasok', name: 'id_pemasok'},
+                    {data: 'id_satuan', name: 'id_satuan'},
+                    {data: 'harga', name: 'harga'},
+                    {data: 'stok', name: 'stok'},
+                    {data: 'id', name: 'id', orderable: false, searchable: false,
+                        render: function (data, type, row) {
+                            return '<a href="{{url('barang')}}/' + data + '/edit" class="btn btn-primary btn-sm mr-1">Edit</a>' +
+                                '<button class="btn btn-danger btn-sm btn-delete" data-id="' + data + '">Delete</button>';
+                        }
+                    },
+                ]
+            });
+        });
 
-            $('.harga').each(function () {
-                let harga = $(this).text();
-                let reverse = harga.toString().split('').reverse().join(''),
-                    ribuan = reverse.match(/\d{1,3}/g);
-                ribuan = ribuan.join(',').split('').reverse().join('');
-                $(this).text(ribuan);
+        $(document).ready(function () {
+            // Event click pada tombol delete
+            $(document).on('click', '.btn-delete', function () {
+                var id = $(this).data('id');
+
+                Swal.fire({
+                    title: 'Apakah anda yakin?',
+                    text: "Setelah dihapus, Anda tidak dapat memulihkan Data ini lagi!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Mengirimkan form penghapusan
+                        var form = $('<form>').attr({
+                            action: "{{url('barang')}}/" + id,
+                            method: 'POST',
+                            class: 'delete-form'
+                        }).append('@csrf', '@method("DELETE")');
+
+                        form.appendTo('body').submit();
+                    }
+                });
             });
         });
     </script>

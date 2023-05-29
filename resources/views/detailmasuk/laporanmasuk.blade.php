@@ -66,52 +66,19 @@
             <div class="card-body">
                 <a href="#" id="exportTransaction" class="btn btn-sm btn-success my-2" data-toggle="modal" data-target="#export">Export Transaksi Masuk</a>
                 <a href="#" id="exportDetail" class="btn btn-sm btn-success my-2" data-toggle="modal" data-target="#export">Export Detail Transaksi Masuk</a>
-                <form action="{{url('laporanmasuk')}}" method="get">
-                    <div class="input-group mb-3 w-25">
-                        <input type="text" name="search" class="form-control" placeholder="Search"
-                               value="{{request()->search}}">
-                        <div class="input-group-append">
-                            <button class="btn btn-primary" type="submit">Search</button>
-                        </div>
-                    </div>
-                </form>
-                <table id="example1" class="table table-bordered table-striped">
+                <table class="table table-bordered table-striped w-100" id="dataTable">
                     <thead>
                     <tr>
+                        <th style="width: 5%">No</th>
                         <th>Tanggal</th>
-                        <th>ID Transaksi</th>
-                        {{-- <th>ID Barang</th>
-                        <th>Kode Barang</th>
-                        <th>Nama Barang</th>
-                        <th>Kategori</th>
-                        <th>Pemasok</th> --}}
                         <th>Jumlah</th>
                         <th>User</th>
-                        <th>Action</th>
+                        <th style="width: 15%">Action</th>
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($data as $row)
-                        <tr>
-                            <input type="hidden" class="code" value="{{$row->kode}}">
-                            <td>{{$row->created_at}}</td>
-                            <td>{{$row->id}}</td>
-                            {{-- <td>{{$row->id_barang}}</td>
-                            <td>{{$row->barang->kode}}</td>
-                            <td>{{$row->barang->nama}}</td>
-                            <td>{{$row->barang->kategori->nama}}</td>
-                            <td>{{$row->barang->pemasok->nama}}</td> --}}
-                            <td>{{$row->qty}}</td>
-                            <td>{{$row->id_user}}</td>
-                            <td>
-                                <a href="{{url('/laporanmasuk/'. $row->id.'/detaillaporanmasuk/')}}"
-                                    class="btn btn-sm btn-warning">Detail Laporan</a>
-                            </td>
-                        </tr>
-                    @endforeach
                     </tbody>
                 </table>
-                {{ $data->links() }}
             </div>
         </div>
         <!-- /.card -->
@@ -138,6 +105,34 @@
                 $('#exportAll').attr('href', '{{url('export/detailtransaksimasuk')}}')
             })
         })
+
+        $(document).ready(function () {
+            $('#dataTable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: "{{url('laporanmasuk/data')}}",
+                    dataType: 'json',
+                    type: 'POST',
+                },
+                columns: [
+                    {data: 'number', name: 'number'},
+                    {data: 'created_at', name: 'created_at',
+                        render: function (data, type, row) {
+                            return row.created_at.slice(0,10)
+                        },
+                    },
+                    {data: 'qty', name: 'qty'},
+                    {data: 'id_user', name: 'id_user'},
+                    {data: 'id', name: 'id',
+                        render: function (data, type, row) {
+                            return '<a href="{{url('/laporanmasuk/')}}/'+row.id+'/detaillaporanmasuk/" class="btn btn-sm btn-warning">Detail Laporan</a>'
+                        },
+                    },
+                ]
+
+            });
+        });
     </script>
 
 @endpush

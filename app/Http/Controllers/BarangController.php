@@ -12,6 +12,7 @@ use App\Models\Satuan;
 use App\Exports\BarangExport;
 use \Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class BarangController extends Controller
 {
@@ -21,20 +22,25 @@ class BarangController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        if ($request->has('search')){
-            $data=Barang::where('kode','like',"%{$request->search}%")
-                ->orWhere('nama','like',"%{$request->search}%")
-                ->orWhere('harga','like',"%{$request->search}%")
-                ->orWhere('stok','like',"%{$request->search}%")
-                ->paginate(5);
-            return view('barang.barang')
-                ->with('data',$data);
+        return view('barang.barang');
+    }
+
+    public function data()
+    {
+        $data=Barang::all();
+        foreach ($data as $key => $value) {
+            $value->id_kategori = $value->kategori->nama;
+            $value->id_pemasok = $value->pemasok->nama;
+            $value->id_satuan = $value->satuan->nama;
+            unset($value->kategori);
+            unset($value->pemasok);
+            unset($value->satuan);
         }
-        $data=Barang::paginate(5);
-        return view('barang.barang')
-            ->with('data',$data);
+        return DataTables::of($data)
+            ->addIndexColumn()
+            ->make(true);
     }
 
     /**

@@ -6,6 +6,7 @@ use App\Exports\RiwayatExport;
 use App\Models\Riwayat;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use Yajra\DataTables\Facades\DataTables;
 
 class RiwayatController extends Controller
 {
@@ -14,29 +15,21 @@ class RiwayatController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        if ($request->has('search')){
-            $data=Riwayat::where('tanggal','like',"%{$request->search}%")
-                ->orWhere('jenis','like',"%{$request->search}%")
-                ->orWhere('lokasi','like',"%{$request->search}%")
-                ->orWhere('keterangan','like',"%{$request->search}%")
-                ->orWhere('id_user','like',"%{$request->search}%")
-                ->paginate(5);
-            foreach ($data as $key => $value) {
-                $value->id_user = $value->user->username;
-                unset($value->user);
-            }
-            return view('riwayat')
-                ->with('data',$data);
-        }
-        $data=Riwayat::paginate(5);
+        return view('riwayat');
+    }
+
+    public function data()
+    {
+        $data=Riwayat::all();
         foreach ($data as $key => $value) {
             $value->id_user = $value->user->username;
             unset($value->user);
         }
-        return view('riwayat')
-            ->with('data',$data);
+        return DataTables::of($data)
+            ->addIndexColumn()
+            ->make(true);
     }
 
     public function exportAll()

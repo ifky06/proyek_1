@@ -8,6 +8,7 @@ use App\Models\DetailTransaksiMasuk;
 use App\Models\TransaksiMasuk;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use Yajra\DataTables\Facades\DataTables;
 
 class DetailTransaksiMasukController extends Controller
 {
@@ -16,25 +17,21 @@ class DetailTransaksiMasukController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        if ($request->has('search')){
-            $data=TransaksiMasuk::where('tanggal','like',"%{$request->search}%")
-                ->paginate(5);
-            foreach ($data as $key => $value) {
-                $value->id_user = $value->user->username;
-                unset($value->user);
-            }
-            return view('detailmasuk.laporanmasuk')
-                ->with('data',$data);
-        }
-        $data=TransaksiMasuk::paginate(5);
+        return view('detailmasuk.laporanmasuk');
+    }
+
+    public function data()
+    {
+        $data=TransaksiMasuk::all();
         foreach ($data as $key => $value) {
             $value->id_user = $value->user->username;
             unset($value->user);
         }
-        return view('detailmasuk.laporanmasuk')
-            ->with('data',$data);
+        return DataTables::of($data)
+            ->addIndexColumn()
+            ->make(true);
     }
 
     public function exportAll()

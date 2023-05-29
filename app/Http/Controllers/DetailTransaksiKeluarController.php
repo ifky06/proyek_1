@@ -7,6 +7,7 @@ use App\Models\Detail_transaksi_keluar;
 use App\Models\Transaksi_Keluar;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use Yajra\DataTables\Facades\DataTables;
 
 class DetailTransaksiKeluarController extends Controller
 {
@@ -15,25 +16,21 @@ class DetailTransaksiKeluarController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        if ($request->has('search')){
-            $data=Transaksi_Keluar::where('tanggal','like',"%{$request->search}%")
-                ->paginate(5);
-            foreach ($data as $key => $value) {
-                $value->id_users = $value->user->username;
-                unset($value->user);
-            }
-            return view('detailkeluar.laporankeluar')
-                ->with('data',$data);
-        }
-        $data=Transaksi_Keluar::paginate(5);
+        return view('detailkeluar.laporankeluar');
+    }
+
+    public function data()
+    {
+        $data=Transaksi_Keluar::all();
         foreach ($data as $key => $value) {
             $value->id_users = $value->user->username;
             unset($value->user);
         }
-        return view('detailkeluar.laporankeluar')
-            ->with('data',$data);
+        return DataTables::of($data)
+            ->addIndexColumn()
+            ->make(true);
     }
 
     public function exportAll()

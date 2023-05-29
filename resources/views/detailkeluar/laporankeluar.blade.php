@@ -66,18 +66,10 @@
             <div class="card-body">
                 <a href="#" id="exportTransaction" class="btn btn-sm btn-success my-2" data-toggle="modal" data-target="#export">Export Transaksi Keluar</a>
                 <a href="#" id="exportDetail" class="btn btn-sm btn-success my-2" data-toggle="modal" data-target="#export">Export Detail Transaksi Keluar</a>
-                <form action="{{url('laporankeluar')}}" method="get">
-                    <div class="input-group mb-3 w-25">
-                        <input type="text" name="search" class="form-control" placeholder="Search"
-                               value="{{request()->search}}">
-                        <div class="input-group-append">
-                            <button class="btn btn-primary" type="submit">Search</button>
-                        </div>
-                    </div>
-                </form>
-                <table id="example1" class="table table-bordered table-striped">
+                <table class="table table-bordered table-striped" id="allData">
                     <thead>
                     <tr>
+                        <th>No</th>
                         <th>Tanggal</th>
                         <th>Jumlah</th>
                         <th>Total</th>
@@ -88,24 +80,8 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($data as $row)
-                        <tr>
-                            <input type="hidden" class="code" value="{{$row->kode}}">
-                            <td>{{$row->created_at}}</td>
-                            <td>{{$row->qty}}</td>
-                            <td>{{$row->grand_total}}</td>
-                            <td>{{$row->bayar}}</td>
-                            <td>{{$row->kembalian}}</td>
-                            <td>{{$row->id_users}}</td>
-                            <td>
-                                <a href="{{url('/laporankeluar/'. $row->id.'/detaillaporankeluar/')}}"
-                                    class="btn btn-sm btn-warning">Detail Laporan</a>
-                            </td>
-                        </tr>
-                    @endforeach
                     </tbody>
                 </table>
-                {{ $data->links() }}
             </div>
         </div>
         <!-- /.card -->
@@ -132,6 +108,52 @@
                     $('#exportAll').attr('href', '{{url('export/detailtransaksikeluar')}}')
                 })
             })
+
+            $(document).ready(function () {
+                $('#allData').DataTable({
+                    processing: true,
+                    serverSide: true,
+                    ajax: {
+                        url: "{{url('laporankeluar/data')}}",
+                        dataType: 'json',
+                        type: 'POST',
+                    },
+                    columns: [
+                        {data: 'number', name: 'number', searchable: false, orderable: false},
+                        {data: 'created_at', name: 'created_at',
+                            render: function (data, type, row) {
+                                return row.created_at.slice(0,10)
+                            }
+                        },
+                        {data: 'qty', name: 'qty'},
+                        {data: 'grand_total', name: 'grand_total',
+                            render: function (data, type, row) {
+                                return toRupiah(row.grand_total);
+                            }},
+                        {data: 'bayar', name: 'bayar',
+                            render: function (data, type, row) {
+                                return toRupiah(row.bayar);
+                            }
+                        },
+                        {data: 'kembalian', name: 'kembalian',
+                            render: function (data, type, row) {
+                                return toRupiah(row.kembalian);
+                            }},
+                        {data: 'id_users', name: 'id_users'},
+                        {data: 'id', name: 'id', searchable: false, orderable: false,
+                            render: function (data, type, row) {
+                                return '<a href="{{url('/laporankeluar/')}}/'+row.id+'/detaillaporankeluar/" class="btn btn-sm btn-warning">Detail Laporan</a>'
+                            }
+                        },
+                    ]
+
+                });
+
+                let toRupiah = (number) => {
+                    return 'Rp. '+number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                }
+
+            });
         </script>
 
 @endpush
