@@ -80,7 +80,7 @@
                         <th>Harga</th>
                         <th>Stok</th>
                         @if(Auth::user()->role != 2)
-                            <th>Action</th>
+                            <th style="width: 12%">Action</th>
                         @endif
                     </tr>
                     </thead>
