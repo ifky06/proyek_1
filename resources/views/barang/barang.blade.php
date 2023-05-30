@@ -68,15 +68,6 @@
                     <a href="#" class="btn btn-sm btn-warning my-2" data-toggle="modal" data-target="#exampleModal">Import
                         Excel</a>
                 @endif
-                <form action="{{url('barang')}}" method="get">
-                    <div class="input-group mb-3 w-25">
-                        <input type="text" name="search" class="form-control" placeholder="Search"
-                               value="{{request()->search}}">
-                        <div class="input-group-append">
-                            <button class="btn btn-primary" type="submit">Search</button>
-                        </div>
-                    </div>
-                </form>
                 <table class="table table-bordered table-striped mb-3" id="dataTable">
                     <thead>
                     <tr>
@@ -128,14 +119,22 @@
                     {data: 'id_kategori', name: 'id_kategori'},
                     {data: 'id_pemasok', name: 'id_pemasok'},
                     {data: 'id_satuan', name: 'id_satuan'},
-                    {data: 'harga', name: 'harga'},
+                    {
+                        data: 'harga', name: 'harga',
+                        render: function (data) {
+                            return 'Rp. ' + data.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                        },
+                    },
                     {data: 'stok', name: 'stok'},
-                    {data: 'id', name: 'id', orderable: false, searchable: false,
+                        @if(Auth::user()->role != 2)
+                    {
+                        data: 'id', name: 'id', orderable: false, searchable: false,
                         render: function (data, type, row) {
                             return '<a href="{{url('barang')}}/' + data + '/edit" class="btn btn-primary btn-sm mr-1">Edit</a>' +
                                 '<button class="btn btn-danger btn-sm btn-delete" data-id="' + data + '">Delete</button>';
                         }
                     },
+                    @endif
                 ]
             });
         });

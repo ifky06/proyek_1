@@ -33,7 +33,7 @@ class BarangController extends Controller
         foreach ($data as $key => $value) {
             $value->id_kategori = $value->kategori->nama;
             $value->id_pemasok = $value->pemasok->nama;
-            $value->id_satuan = $value->satuan->nama;
+            $value->id_satuan = $value->satuan->satuan;
             unset($value->kategori);
             unset($value->pemasok);
             unset($value->satuan);
@@ -41,6 +41,13 @@ class BarangController extends Controller
         return DataTables::of($data)
             ->addIndexColumn()
             ->make(true);
+    }
+
+    public function dataJSON(Request $request)
+    {
+
+        $data=Barang::selectRaw('kode, nama')->get();
+        return response()->json($data);
     }
 
     /**

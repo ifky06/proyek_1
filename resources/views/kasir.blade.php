@@ -30,13 +30,16 @@
                     <div class="input-group mb-3">
                         <input id="code" type="text" class="form-control w-50" placeholder="Kode Barang"
                                value="">
+                        <ul class="list-group" id="result"></ul>
                         <input id="value" type="text" class="form-control" placeholder="Jumlah"
                                value="">
                         <input id="totalqty" type="hidden" class="form-control" placeholder="Jumlah"
                                value="0">
                         <div class="input-group-append">
                             <button id="add" class="btn btn-primary">Add</button>
-                            <button id="payingForm" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">Pay</button>
+                            <button id="payingForm" class="btn btn-success" data-toggle="modal"
+                                    data-target="#exampleModal">Pay
+                            </button>
                         </div>
                     </div>
                     <div class="input-group text-right">
@@ -75,21 +78,24 @@
                             <div class="input-group-prepend w-25">
                                 <span class="input-group-text w-100" id="addon-wrapping">Total</span>
                             </div>
-                            <input id="totalInput" type="number" class="form-control w-50" disabled placeholder="Nominal Pembayaran"
+                            <input id="totalInput" type="number" class="form-control w-50" disabled
+                                   placeholder="Nominal Pembayaran"
                                    value="">
                         </div>
                         <div class="input-group mb-3 flex-nowrap">
                             <div class="input-group-prepend w-25">
                                 <span class="input-group-text w-100" id="addon-wrapping">Bayar</span>
                             </div>
-                            <input id="payingInput" type="number" class="form-control w-50" placeholder="Masukkan Nominal"
+                            <input id="payingInput" type="number" class="form-control w-50"
+                                   placeholder="Masukkan Nominal"
                                    value="">
                         </div>
                         <div class="input-group mb-3 flex-nowrap">
                             <div class="input-group-prepend w-25">
                                 <span class="input-group-text w-100" id="addon-wrapping">Kembalian</span>
                             </div>
-                            <input id="changeInput" type="number" class="form-control w-50" disabled placeholder="Nominal Kembalian"
+                            <input id="changeInput" type="number" class="form-control w-50" disabled
+                                   placeholder="Nominal Kembalian"
                                    value="0">
                         </div>
                     </div>
@@ -105,16 +111,65 @@
 
     </section>
 
-
 @endsection
 
 @push('css')
+    <style>
+        #result {
+            position: absolute;
+            top: 38px;
+            width: 63%;
+            max-width: 870px;
+            cursor: pointer;
+            overflow-y: auto;
+            max-height: 400px;
+            box-sizing: border-box;
+            z-index: 1001;
+        }
 
+        .link-class:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
 @endpush
 
 @push('scripts')
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
+            let data = [];
+            $.ajax({
+                url: "{{ url('barang/datajson') }}",
+                method: "POST",
+                data: {query: ''},
+                success: function (response) {
+                    data = response;
+                }
+            });
+            $('#code').keyup(function () {
+                let html = '';
+                let query = $(this).val();
+                if (query !== '') {
+                    let regex = new RegExp(query, 'i');
+                    let result = $.grep(data, function (v) {
+                        return regex.test(v.kode);
+                    });
+                    for (let i = 0; i < result.length; i++) {
+                        if (i === 5) {
+                            break;
+                        }
+                        html += '<li class="list-group-item link-class">' + result[i].kode + ' | ' + result[i].nama + '</li>';
+                    }
+                }
+                $('#result').html(html);
+            });
+            $('#result').on('click', 'li', function () {
+                let value = $(this).text().split(' | ');
+                $('#code').val(value[0]);
+                $('#result').html('');
+            });
+
+        });
+        $(document).ready(function () {
             const data = {!! json_encode($data) !!};
             let item = [];
 
@@ -128,7 +183,7 @@
                 if (item.length === 0) {
                     $('tbody').html('<tr><td colspan="6">No data</td></tr>');
                 } else {
-                    item.forEach(function(i) {
+                    item.forEach(function (i) {
                         i.subtotal = parseInt(i.harga) * parseInt(i.qty);
                         let row = `<tr>
                     <input type="hidden" class="code" value="${i.kode}">
@@ -150,15 +205,15 @@
                 $('#total').html(total.toLocaleString());
             }
 
-            $('#add').click(function() {
+            $('#add').click(function () {
                 let code = $('#code').val();
                 let value = $('#value').val();
-                let foundItem = data.find(function(item) {
+                let foundItem = data.find(function (item) {
                     return item.kode === code;
                 });
 
                 if (foundItem) {
-                    let existingItem = item.find(function(item) {
+                    let existingItem = item.find(function (item) {
                         return item.kode === foundItem.kode;
                     });
 
@@ -178,10 +233,10 @@
                 }
             });
 
-            $(document).on('change', '.value', function() {
+            $(document).on('change', '.value', function () {
                 let code = $(this).closest('tr').find('.code').val();
                 let value = $(this).val();
-                let existingItem = item.find(function(item) {
+                let existingItem = item.find(function (item) {
                     return item.kode === code;
                 });
 
@@ -191,9 +246,9 @@
                 }
             });
 
-            $(document).on('click', '.delete', function() {
+            $(document).on('click', '.delete', function () {
                 let code = $(this).closest('tr').find('.code').val();
-                let index = item.findIndex(function(item) {
+                let index = item.findIndex(function (item) {
                     return item.kode === code;
                 });
 
@@ -203,19 +258,19 @@
                 }
             });
 
-            $('#payingForm').click(function() {
+            $('#payingForm').click(function () {
                 let total = $('#total').html().replace(/,/g, '');
                 $('#totalInput').val(total);
             });
 
-            $(document).on('change', '#payingInput', function() {
+            $(document).on('change', '#payingInput', function () {
                 let total = $('#totalInput').val();
                 let paying = $(this).val();
                 let change = parseInt(paying) - parseInt(total);
                 $('#changeInput').val(change);
             });
 
-            $('#pay').click(function() {
+            $('#pay').click(function () {
                 let payment =
                     {
                         'qty': parseInt($('#totalqty').val()),
@@ -271,17 +326,17 @@
                 $('#changeInput').val('');
             }
         });
-            {{--$.ajax({--}}
-            {{--    url: "{{ route('kasir.store') }}",--}}
-            {{--    method: "POST",--}}
-            {{--    data: {--}}
-            {{--        _token: '{{ csrf_token() }}',--}}
-            {{--        data: item--}}
-            {{--    },--}}
-            {{--    success: function (response) {--}}
-            {{--        console.log(response);--}}
-            {{--    }--}}
-            {{--});--}}
+        {{--$.ajax({--}}
+        {{--    url: "{{ route('kasir.store') }}",--}}
+        {{--    method: "POST",--}}
+        {{--    data: {--}}
+        {{--        _token: '{{ csrf_token() }}',--}}
+        {{--        data: item--}}
+        {{--    },--}}
+        {{--    success: function (response) {--}}
+        {{--        console.log(response);--}}
+        {{--    }--}}
+        {{--});--}}
 
     </script>
 

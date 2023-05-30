@@ -30,6 +30,7 @@
                     <div class="input-group mb-3">
                         <input id="code" type="text" class="form-control w-50" placeholder="Kode Barang"
                                value="">
+                        <ul class="list-group" id="result"></ul>
                         <input id="value" type="text" class="form-control" placeholder="Jumlah"
                                value="">
                         <input id="totalqty" type="hidden" class="form-control" placeholder="Jumlah"
@@ -64,11 +65,61 @@
 @endsection
 
 @push('css')
+    <style>
+        #result {
+            position: absolute;
+            top: 38px;
+            width: 63%;
+            max-width: 870px;
+            cursor: pointer;
+            overflow-y: auto;
+            max-height: 400px;
+            box-sizing: border-box;
+            z-index: 1001;
+        }
 
+        .link-class:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
 @endpush
 
 @push('scripts')
     <script>
+        $(document).ready(function () {
+            let data = [];
+            $.ajax({
+                url: "{{ url('barang/datajson') }}",
+                method: "POST",
+                data: {query: ''},
+                success: function (response) {
+                    data = response;
+                }
+            });
+            $('#code').keyup(function () {
+                let html = '';
+                let query = $(this).val();
+                if (query !== '') {
+                    let regex = new RegExp(query, 'i');
+                    let result = $.grep(data, function (v) {
+                        return regex.test(v.kode);
+                    });
+                    for (let i = 0; i < result.length; i++) {
+                        if (i === 5) {
+                            break;
+                        }
+                        html += '<li class="list-group-item link-class">' + result[i].kode + ' | ' + result[i].nama + '</li>';
+                    }
+                }
+                $('#result').html(html);
+            });
+            $('#result').on('click', 'li', function () {
+                let value = $(this).text().split(' | ');
+                $('#code').val(value[0]);
+                $('#result').html('');
+            });
+
+        });
         $(document).ready(function() {
             var data = {!! json_encode($data) !!};
             var item = [];

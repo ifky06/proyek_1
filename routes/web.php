@@ -46,6 +46,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/barang', [BarangController::class, 'index']);
     Route::post('/barang/data', [BarangController::class, 'data']);
+    Route::post('/barang/datajson', [BarangController::class, 'dataJSON']);
     Route::get('/pemasok', [PemasokController::class, 'index']);
     Route::get('/kategori', [KategoriController::class, 'index']);
     Route::get('/satuan', [SatuanController::class, 'index']);
