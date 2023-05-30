@@ -66,7 +66,7 @@
             <div class="card-body">
                 <a href="#" id="exportTransaction" class="btn btn-sm btn-success my-2" data-toggle="modal" data-target="#export">Export Transaksi Keluar</a>
                 <a href="#" id="exportDetail" class="btn btn-sm btn-success my-2" data-toggle="modal" data-target="#export">Export Detail Transaksi Keluar</a>
-                <table class="table table-bordered table-striped" id="allData">
+                <table class="table table-bordered table-striped w-100" id="allData">
                     <thead>
                     <tr>
                         <th>No</th>

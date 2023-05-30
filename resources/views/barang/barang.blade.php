@@ -68,7 +68,7 @@
                     <a href="#" class="btn btn-sm btn-warning my-2" data-toggle="modal" data-target="#exampleModal">Import
                         Excel</a>
                 @endif
-                <table class="table table-bordered table-striped mb-3" id="dataTable">
+                <table class="table table-bordered table-striped mb-3 w-100" id="dataTable">
                     <thead>
                     <tr>
                         <th>No</th>
@@ -80,7 +80,7 @@
                         <th>Harga</th>
                         <th>Stok</th>
                         @if(Auth::user()->role != 2)
-                            <th style="width: 12%">Action</th>
+                            <th style="width: 13%">Action</th>
                         @endif
                     </tr>
                     </thead>

@@ -59,7 +59,7 @@
             </div>
             <div class="card-body">
                 <a href="#" class="btn btn-sm btn-success my-2" data-toggle="modal" data-target="#export">Export Riwayat</a>
-                <table class="table table-bordered table-striped" id="dataTable" >
+                <table class="table table-bordered table-striped w-100" id="dataTable" >
                     <thead>
                     <tr>
                         <th>Tanggal</th>
