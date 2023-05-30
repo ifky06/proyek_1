@@ -56,7 +56,7 @@ class UserController extends Controller
             'username'=>'required|unique:users',
             'name'=>'required',
             'email'=>'required',
-            'password'=>'required|max:8',
+            'password'=>'required|min:8',
             'role'=>'required',
         ]);
         $request->merge([
