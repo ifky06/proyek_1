@@ -21,9 +21,15 @@ class DetailTransaksiKeluarController extends Controller
         return view('detailkeluar.laporankeluar');
     }
 
-    public function data()
+    public function data(Request $request)
     {
-        $data=Transaksi_Keluar::all();
+
+        if ($request->start && $request->end) {
+            $request->end = date('Y-m-d', strtotime($request->end . ' +1 day'));
+            $data=Transaksi_Keluar::whereBetween('created_at', [$request->start, $request->end])->get();
+        } else {
+            $data=Transaksi_Keluar::all();
+        }
         foreach ($data as $key => $value) {
             $value->id_users = $value->user->username;
             unset($value->user);

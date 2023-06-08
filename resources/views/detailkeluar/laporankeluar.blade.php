@@ -39,18 +39,18 @@
                             <label>Tanggal Transaksi</label>
                             <div class="form-row">
                                 <div class="form-group col">
-                                    <input type="date" class="form-control" name="start">
+                                    <input type="date" class="form-control" name="start" id="exportDateStart">
                                 </div>
                                 <div class="form-group col-1 mt-1 text-center">
                                     <label>-----</label>
                                 </div>
                                 <div class="form-group col">
-                                    <input type="date" class="form-control" name="end">
+                                    <input type="date" class="form-control" name="end" id="exportDateEnd">
                                 </div>
                             </div>
                             <div class="d-flex justify-content-between">
                                 <a href="" id="exportAll" class="btn btn-sm btn-success">Export Semua</a>
-                                <button type="submit" class="btn btn-sm btn-primary" id="importButton">Export
+                                <button type="submit" class="btn btn-sm btn-primary" disabled id="importButton">Export
                                 </button>
                             </div>
                         </form>
@@ -66,10 +66,16 @@
             <div class="card-body">
                 <a href="#" id="exportTransaction" class="btn btn-sm btn-success my-2" data-toggle="modal" data-target="#export">Export Transaksi Keluar</a>
                 <a href="#" id="exportDetail" class="btn btn-sm btn-success my-2" data-toggle="modal" data-target="#export">Export Detail Transaksi Keluar</a>
+                <div class="row pt-1">
+                    <p class="px-3">Filter:</p>
+                    <input type="date" class="form-control form-control-sm w-25 mr-1" name="start" id="dateStart">
+                    <input type="date" class="form-control form-control-sm w-25 mr-1" name="end" id="dateEnd">
+                    <a href="#" class="btn btn-sm btn-primary h-75 mr-1" id="dateFilter">Filter</a>
+                    <a href="#" class="btn btn-sm btn-warning h-75" id="dateClear">Clear</a>
+                </div>
                 <table class="table table-bordered table-striped w-100" id="allData">
                     <thead>
                     <tr>
-                        <th>No</th>
                         <th>Tanggal</th>
                         <th>Jumlah</th>
                         <th>Total</th>
@@ -107,21 +113,43 @@
                     $('#exportForm').attr('action', '{{url('export/detailtransaksikeluar')}}')
                     $('#exportAll').attr('href', '{{url('export/detailtransaksikeluar')}}')
                 })
+
+                // // export date start and end change
+                // $('#exportDateStart').change(function (){
+                //     exportDateCheck()
+                // })
+                // $('#exportDateEnd').change(function (){
+                //     exportDateCheck()
+                // })
+                //
+                // let exportDateCheck = function (){
+                //
+                // if (($('#exportDateStart').val() < $('#exportDateEnd').val())&&($('#exportDateStart').val() !== '')&&($('#exportDateEnd').val() !== '')) {
+                //     return $('#importButton').attr('disabled', true)
+                // } else {
+                //     return $('#importButton').attr('disabled', false)
+                // }
+                // }
             })
 
             $(document).ready(function () {
-                $('#allData').DataTable({
+                let table = $('#allData').DataTable({
                     processing: true,
-                    serverSide: true,
+                    serverSide: false,
+                    searching: false,
                     ajax: {
                         url: "{{url('laporankeluar/data')}}",
                         dataType: 'json',
                         type: 'POST',
+                        data: function (d) {
+                            d.start = $('#dateStart').val()
+                            d.end = $('#dateEnd').val()
+                        }
                     },
                     columns: [
-                        {data: 'number', name: 'number', searchable: false, orderable: false},
                         {data: 'created_at', name: 'created_at',
                             render: function (data, type, row) {
+                            // console.log(row.created_at.slice(0,10))
                                 return row.created_at.slice(0,10)
                             }
                         },
@@ -149,11 +177,29 @@
 
                 });
 
+                $('#dateFilter').click(function () {
+                    table.ajax.reload()
+                });
+
+                $('#dateClear').click(function () {
+                    $('#dateStart').val('')
+                    $('#dateEnd').val('')
+                    table.ajax.reload()
+                });
+
                 let toRupiah = (number) => {
                     return 'Rp. '+number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                 }
 
+            //     date range filter
+
+
+
+
+
             });
+
+
         </script>
 
 @endpush
