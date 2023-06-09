@@ -70,8 +70,8 @@
                     <p class="px-3">Filter:</p>
                     <input type="date" class="form-control form-control-sm w-25 mr-1" name="start" id="dateStart">
                     <input type="date" class="form-control form-control-sm w-25 mr-1" name="end" id="dateEnd">
-                    <a href="#" class="btn btn-sm btn-primary h-75 mr-1" id="dateFilter">Filter</a>
-                    <a href="#" class="btn btn-sm btn-warning h-75" id="dateClear">Clear</a>
+                    <button class="btn btn-sm btn-primary h-75 mr-1" disabled id="dateFilter">Filter</button>
+                    <button class="btn btn-sm btn-warning h-75" disabled id="dateClear">Clear</button>
                 </div>
                 <table class="table table-bordered table-striped w-100" id="allData">
                     <thead>
@@ -114,22 +114,29 @@
                     $('#exportAll').attr('href', '{{url('export/detailtransaksikeluar')}}')
                 })
 
-                // // export date start and end change
-                // $('#exportDateStart').change(function (){
-                //     exportDateCheck()
-                // })
-                // $('#exportDateEnd').change(function (){
-                //     exportDateCheck()
-                // })
-                //
-                // let exportDateCheck = function (){
-                //
-                // if (($('#exportDateStart').val() < $('#exportDateEnd').val())&&($('#exportDateStart').val() !== '')&&($('#exportDateEnd').val() !== '')) {
-                //     return $('#importButton').attr('disabled', true)
-                // } else {
-                //     return $('#importButton').attr('disabled', false)
-                // }
-                // }
+                $('#exportDateStart').change(function () {
+                    exportDateCheck()
+                })
+                $('#exportDateEnd').change(function () {
+                    exportDateCheck()
+                })
+
+                let exportDateCheck = function () {
+
+                    if (exportDateCondition()) {
+                        return $('#importButton').attr('disabled', false)
+                    } else {
+                        return $('#importButton').attr('disabled', true)
+                    }
+                }
+
+                let exportDateCondition = function (){
+                    let now = new Date();
+                    return ($('#exportDateStart').val() < $('#exportDateEnd').val())
+                        && ($('#exportDateStart').val() !== '') && ($('#exportDateEnd').val() !== '')
+                        &&  ($('#exportDateStart').val() <= now.toISOString().slice(0,10))
+                        && ($('#exportDateEnd').val() <= now.toISOString().slice(0,10));
+                }
             })
 
             $(document).ready(function () {
@@ -178,20 +185,61 @@
                 });
 
                 $('#dateFilter').click(function () {
-                    table.ajax.reload()
+                    table.ajax.reload();
+                    dateCheck();
+                    dateClearCheck();
                 });
 
                 $('#dateClear').click(function () {
-                    $('#dateStart').val('')
-                    $('#dateEnd').val('')
-                    table.ajax.reload()
+                    $('#dateStart').val('');
+                    $('#dateEnd').val('');
+                    table.ajax.reload();
+                    dateCheck();
+                    dateClearCheck();
                 });
 
                 let toRupiah = (number) => {
                     return 'Rp. '+number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                 }
 
-            //     date range filter
+                $('#dateStart').change(function () {
+                    dateCheck();
+                    dateClearCheck()
+                })
+                $('#dateEnd').change(function () {
+                    dateCheck();
+                    dateClearCheck()
+                })
+
+                let dateCheck = function () {
+
+                    if (dateCondition()) {
+                        return $('#dateFilter').attr('disabled', false)
+                    } else {
+                        return $('#dateFilter').attr('disabled', true)
+                    }
+                }
+
+                let dateClearCheck = function () {
+
+                    if (dateClearCondition()) {
+                        return $('#dateClear').attr('disabled', false)
+                    } else {
+                        return $('#dateClear').attr('disabled', true)
+                    }
+                }
+
+                let dateCondition = function (){
+                    let now = new Date();
+                    return ($('#dateStart').val() < $('#dateEnd').val())
+                        && ($('#dateStart').val() !== '') && ($('#dateEnd').val() !== '')
+                        &&  ($('#dateStart').val() <= now.toISOString().slice(0,10))
+                        && ($('#dateEnd').val() <= now.toISOString().slice(0,10));
+                }
+
+                let dateClearCondition = function (){
+                    return ($('#dateStart').val() !== '' || $('#dateEnd').val() !== '')
+                }
 
 
 
