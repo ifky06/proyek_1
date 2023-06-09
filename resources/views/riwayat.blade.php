@@ -33,18 +33,18 @@
                             <label>Tanggal Transaksi</label>
                             <div class="form-row">
                                 <div class="form-group col">
-                                    <input type="date" class="form-control" name="start">
+                                    <input type="date" class="form-control" name="start" id="exportDateStart">
                                 </div>
                                 <div class="form-group col-1 mt-1 text-center">
                                     <label>-----</label>
                                 </div>
                                 <div class="form-group col">
-                                    <input type="date" class="form-control" name="end">
+                                    <input type="date" class="form-control" name="end" id="exportDateEnd">
                                 </div>
                             </div>
                             <div class="d-flex justify-content-between">
                                 <a href="{{url('export/riwayat')}}" id="exportAll" class="btn btn-sm btn-success">Export Semua</a>
-                                <button type="submit" class="btn btn-sm btn-primary" id="importButton">Export
+                                <button type="submit" class="btn btn-sm btn-primary" id="importButton" disabled>Export
                                 </button>
                             </div>
                         </form>
@@ -59,6 +59,13 @@
             </div>
             <div class="card-body">
                 <a href="#" class="btn btn-sm btn-success my-2" data-toggle="modal" data-target="#export">Export Riwayat</a>
+                <div class="row pt-1">
+                    <p class="px-3">Filter:</p>
+                    <input type="date" class="form-control form-control-sm w-25 mr-1" name="start" id="dateStart">
+                    <input type="date" class="form-control form-control-sm w-25 mr-1" name="end" id="dateEnd">
+                    <button class="btn btn-sm btn-primary h-75 mr-1" disabled id="dateFilter">Filter</button>
+                    <button class="btn btn-sm btn-warning h-75" disabled id="dateClear">Clear</button>
+                </div>
                 <table class="table table-bordered table-striped w-100" id="dataTable" >
                     <thead>
                     <tr>
@@ -87,13 +94,43 @@
 
     <script>
         $(document).ready(function () {
-            $('#dataTable').DataTable({
+            $('#exportDateStart').change(function () {
+                exportDateCheck()
+            })
+            $('#exportDateEnd').change(function () {
+                exportDateCheck()
+            })
+
+            let exportDateCheck = function () {
+
+                if (exportDateCondition()) {
+                    return $('#importButton').attr('disabled', false)
+                } else {
+                    return $('#importButton').attr('disabled', true)
+                }
+            }
+
+            let exportDateCondition = function (){
+                let now = new Date();
+                return ($('#exportDateStart').val() < $('#exportDateEnd').val())
+                    && ($('#exportDateStart').val() !== '') && ($('#exportDateEnd').val() !== '')
+                    &&  ($('#exportDateStart').val() <= now.toISOString().slice(0,10))
+                    && ($('#exportDateEnd').val() <= now.toISOString().slice(0,10));
+            }
+
+
+            let table = $('#dataTable').DataTable({
                 processing: true,
-                serverSide: true,
+                serverSide: false,
+                searching: false,
                 ajax: {
                     url: "{{url('riwayat/data')}}",
                     dataType: 'json',
                     type: 'POST',
+                    data: function (d) {
+                        d.start = $('#dateStart').val()
+                        d.end = $('#dateEnd').val()
+                    }
                 },
                 columns: [
                     {data: 'tanggal', name: 'tanggal', orderData: 0,
@@ -107,6 +144,63 @@
                     {data: 'id_user', name: 'id_user'},
                 ]
             });
+
+            $('#dateFilter').click(function () {
+                table.ajax.reload();
+                dateCheck();
+                dateClearCheck();
+            });
+
+            $('#dateClear').click(function () {
+                $('#dateStart').val('');
+                $('#dateEnd').val('');
+                table.ajax.reload();
+                dateCheck();
+                dateClearCheck();
+            });
+
+            let toRupiah = (number) => {
+                return 'Rp. '+number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            }
+
+            $('#dateStart').change(function () {
+                dateCheck();
+                dateClearCheck()
+            })
+            $('#dateEnd').change(function () {
+                dateCheck();
+                dateClearCheck()
+            })
+
+            let dateCheck = function () {
+
+                if (dateCondition()) {
+                    return $('#dateFilter').attr('disabled', false)
+                } else {
+                    return $('#dateFilter').attr('disabled', true)
+                }
+            }
+
+            let dateClearCheck = function () {
+
+                if (dateClearCondition()) {
+                    return $('#dateClear').attr('disabled', false)
+                } else {
+                    return $('#dateClear').attr('disabled', true)
+                }
+            }
+
+            let dateCondition = function (){
+                let now = new Date();
+                return ($('#dateStart').val() < $('#dateEnd').val())
+                    && ($('#dateStart').val() !== '') && ($('#dateEnd').val() !== '')
+                    &&  ($('#dateStart').val() <= now.toISOString().slice(0,10))
+                    && ($('#dateEnd').val() <= now.toISOString().slice(0,10));
+            }
+
+            let dateClearCondition = function (){
+                return ($('#dateStart').val() !== '' || $('#dateEnd').val() !== '')
+            }
         });
     </script>
 

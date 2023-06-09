@@ -20,9 +20,14 @@ class RiwayatController extends Controller
         return view('riwayat');
     }
 
-    public function data()
+    public function data(Request $request)
     {
-        $data=Riwayat::all();
+        if ($request->start && $request->end) {
+            $request->end = date('Y-m-d', strtotime($request->end . ' +1 day'));
+            $data=Riwayat::whereBetween('created_at', [$request->start, $request->end])->get();
+        } else {
+            $data=Riwayat::all();
+        }
         foreach ($data as $key => $value) {
             $value->id_user = $value->user->username;
             unset($value->user);

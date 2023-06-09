@@ -22,9 +22,14 @@ class DetailTransaksiMasukController extends Controller
         return view('detailmasuk.laporanmasuk');
     }
 
-    public function data()
+    public function data(Request $request)
     {
-        $data=TransaksiMasuk::all();
+        if ($request->start && $request->end) {
+            $request->end = date('Y-m-d', strtotime($request->end . ' +1 day'));
+            $data=TransaksiMasuk::whereBetween('created_at', [$request->start, $request->end])->get();
+        } else {
+            $data=TransaksiMasuk::all();
+        }
         foreach ($data as $key => $value) {
             $value->id_user = $value->user->username;
             unset($value->user);
