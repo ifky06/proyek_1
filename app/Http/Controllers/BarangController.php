@@ -24,7 +24,13 @@ class BarangController extends Controller
      */
     public function index()
     {
-        return view('barang.barang');
+        $data=[
+            'kategori'=>Kategori::all(),
+            'pemasok'=>Pemasok::all(),
+            'satuan'=>Satuan::all(),
+        ];
+        return view('barang.barang')
+            ->with('data',$data);
     }
 
     public function data()

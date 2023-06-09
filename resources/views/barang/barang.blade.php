@@ -68,6 +68,19 @@
                     <a href="#" class="btn btn-sm btn-warning my-2" data-toggle="modal" data-target="#exampleModal">Import
                         Excel</a>
                 @endif
+                    <div class="row pt-1">
+                    <p class="mx-2">Filter:</p>
+                    <select class="form-control form-control-sm mr-1" style="width: 15%" name="kategori" id="kategoriFilter">
+                        <option value="">-- Pilih Kategori --</option>
+                    </select>
+                    <select class="form-control form-control-sm mr-1" n style="width: 15%" ame="pemasok" id="pemasokFilter">
+                        <option value="">-- Pilih Pemasok --</option>
+                    </select>
+                    <select class="form-control form-control-sm mr-1" style="width: 15%" name="satuan" id="satuanFilter">
+                        <option value="">-- Pilih Satuan --</option>
+                    </select>
+                    <button class="btn btn-sm btn-warning h-75" disabled id="clearButton">Clear</button>
+            </div>
                 <table class="table table-bordered table-striped mb-3 w-100" id="dataTable">
                     <thead>
                     <tr>
@@ -102,9 +115,8 @@
 @push('scripts')
     {{--    add delete confirmation alert--}}
     <script>
-        // format number harga
         $(document).ready(function () {
-            $('#dataTable').DataTable({
+            let table = $('#dataTable').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: {
@@ -113,19 +125,19 @@
                     type: 'POST',
                 },
                 columns: [
-                    {data: 'number', name: 'number'},
+                    {data: 'number', name: 'number', searchable: false, orderable: false},
                     {data: 'kode', name: 'kode'},
                     {data: 'nama', name: 'nama'},
-                    {data: 'id_kategori', name: 'id_kategori'},
-                    {data: 'id_pemasok', name: 'id_pemasok'},
-                    {data: 'id_satuan', name: 'id_satuan'},
+                    {data: 'id_kategori', name: 'id_kategori', },
+                    {data: 'id_pemasok', name: 'id_pemasok', },
+                    {data: 'id_satuan', name: 'id_satuan', },
                     {
                         data: 'harga', name: 'harga',
                         render: function (data) {
                             return 'Rp. ' + data.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                         },
                     },
-                    {data: 'stok', name: 'stok'},
+                    {data: 'stok', name: 'stok', searchable: false},
                         @if(Auth::user()->role != 2)
                     {
                         data: 'id', name: 'id', orderable: false, searchable: false,
@@ -137,6 +149,47 @@
                     @endif
                 ]
             });
+
+            let data = {!! json_encode($data) !!}
+            console.log(data)
+
+            data.kategori.forEach(function (item) {
+                $('#kategoriFilter').append(`<option value="${item.nama}">${item.nama}</option>`)
+            })
+            data.pemasok.forEach(function (item) {
+                $('#pemasokFilter').append(`<option value="${item.nama}">${item.nama}</option>`)
+            })
+            data.satuan.forEach(function (item) {
+                $('#satuanFilter').append(`<option value="${item.satuan}">${item.satuan}</option>`)
+            })
+
+            $('#kategoriFilter').change(function () {
+                table.column(3).search($(this).val()).draw()
+            });
+            $('#pemasokFilter').change(function (){
+                table.column(4).search($(this).val()).draw()
+            });
+            $('#satuanFilter').change(function (){
+                table.column(5).search($(this).val()).draw()
+            });
+
+            $('#clearButton').click(function (){
+                $('#kategoriFilter').val('')
+                $('#pemasokFilter').val('')
+                $('#satuanFilter').val('')
+                table.column(3).search('').draw()
+                table.column(4).search('').draw()
+                table.column(5).search('').draw()
+                $(this).attr('disabled', true)
+            })
+
+            $('#kategoriFilter, #pemasokFilter, #satuanFilter').change(function (){
+                if($('#kategoriFilter').val() != '' || $('#pemasokFilter').val() != '' || $('#satuanFilter').val() != ''){
+                    $('#clearButton').attr('disabled', false)
+                }else{
+                    $('#clearButton').attr('disabled', true)
+                }
+            })
         });
 
         $(document).ready(function () {
