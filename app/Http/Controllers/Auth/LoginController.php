@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
@@ -39,7 +40,7 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    public function username ()
+    public function username()
     {
         return 'username';
     }
@@ -50,5 +51,18 @@ class LoginController extends Controller
             $this->username() => 'required|string',
             'password' => 'required|string',
         ]);
+    }
+
+    public function login(Request $request)
+    {
+        $this->validateLogin($request);
+
+
+        if ($this->attemptLogin($request)) {
+            return $this->sendLoginResponse($request);
+        } else {
+            return redirect()->back()->with('error', 'Username atau password salah');
+        }
+
     }
 }
