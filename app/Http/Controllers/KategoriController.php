@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Kategori;
 use App\Models\Riwayat;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class KategoriController extends Controller
 {
@@ -14,18 +15,17 @@ class KategoriController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        if ($request->has('search')){
-            $data=Kategori::wherea('kode','like',"%{$request->search}%")
-                ->orWhere('nama','like',"%{$request->search}%")
-                ->paginate(5);
-            return view('kategori.kategori')
-                ->with('data',$data);
-        }
-        $data=Kategori::paginate(5);
-        return view('kategori.kategori')
-            ->with('data',$data);
+        return view('kategori.kategori');
+    }
+
+    public function data()
+    {
+        $data=Kategori::all();
+        return DataTables::of($data)
+            ->addIndexColumn()
+            ->make(true);
     }
 
     /**
@@ -97,7 +97,7 @@ class KategoriController extends Controller
     {
         $request->validate([
             'nama' => 'required',
-           
+
         ]);
         $kategori->update($request->all());
 
@@ -122,6 +122,6 @@ class KategoriController extends Controller
         return redirect('kategori')
             ->with('success', 'Data barang berhasil dihapus');
 
-        
+
     }
 }

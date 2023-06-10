@@ -68,19 +68,22 @@
                     <a href="#" class="btn btn-sm btn-warning my-2" data-toggle="modal" data-target="#exampleModal">Import
                         Excel</a>
                 @endif
-                    <div class="row pt-1">
+                <div class="row pt-1">
                     <p class="mx-2">Filter:</p>
-                    <select class="form-control form-control-sm mr-1" style="width: 15%" name="kategori" id="kategoriFilter">
+                    <select class="form-control form-control-sm mr-1" style="width: 15%" name="kategori"
+                            id="kategoriFilter">
                         <option value="">-- Pilih Kategori --</option>
                     </select>
-                    <select class="form-control form-control-sm mr-1" n style="width: 15%" ame="pemasok" id="pemasokFilter">
+                    <select class="form-control form-control-sm mr-1" n style="width: 15%" ame="pemasok"
+                            id="pemasokFilter">
                         <option value="">-- Pilih Pemasok --</option>
                     </select>
-                    <select class="form-control form-control-sm mr-1" style="width: 15%" name="satuan" id="satuanFilter">
+                    <select class="form-control form-control-sm mr-1" style="width: 15%" name="satuan"
+                            id="satuanFilter">
                         <option value="">-- Pilih Satuan --</option>
                     </select>
                     <button class="btn btn-sm btn-warning h-75" disabled id="clearButton">Clear</button>
-            </div>
+                </div>
                 <table class="table table-bordered table-striped mb-3 w-100" id="dataTable">
                     <thead>
                     <tr>
@@ -128,9 +131,9 @@
                     {data: 'number', name: 'number', searchable: false, orderable: false},
                     {data: 'kode', name: 'kode'},
                     {data: 'nama', name: 'nama'},
-                    {data: 'id_kategori', name: 'id_kategori', },
-                    {data: 'id_pemasok', name: 'id_pemasok', },
-                    {data: 'id_satuan', name: 'id_satuan', },
+                    {data: 'id_kategori', name: 'id_kategori',},
+                    {data: 'id_pemasok', name: 'id_pemasok',},
+                    {data: 'id_satuan', name: 'id_satuan',},
                     {
                         data: 'harga', name: 'harga',
                         render: function (data) {
@@ -166,14 +169,14 @@
             $('#kategoriFilter').change(function () {
                 table.column(3).search($(this).val()).draw()
             });
-            $('#pemasokFilter').change(function (){
+            $('#pemasokFilter').change(function () {
                 table.column(4).search($(this).val()).draw()
             });
-            $('#satuanFilter').change(function (){
+            $('#satuanFilter').change(function () {
                 table.column(5).search($(this).val()).draw()
             });
 
-            $('#clearButton').click(function (){
+            $('#clearButton').click(function () {
                 $('#kategoriFilter').val('')
                 $('#pemasokFilter').val('')
                 $('#satuanFilter').val('')
@@ -183,10 +186,10 @@
                 $(this).attr('disabled', true)
             })
 
-            $('#kategoriFilter, #pemasokFilter, #satuanFilter').change(function (){
-                if($('#kategoriFilter').val() != '' || $('#pemasokFilter').val() != '' || $('#satuanFilter').val() != ''){
+            $('#kategoriFilter, #pemasokFilter, #satuanFilter').change(function () {
+                if ($('#kategoriFilter').val() != '' || $('#pemasokFilter').val() != '' || $('#satuanFilter').val() != '') {
                     $('#clearButton').attr('disabled', false)
-                }else{
+                } else {
                     $('#clearButton').attr('disabled', true)
                 }
             })

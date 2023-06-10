@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Riwayat;
 use App\Models\Satuan;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class SatuanController extends Controller
 {
@@ -26,6 +27,14 @@ class SatuanController extends Controller
         $data=Satuan::paginate(5);
         return view('satuan.satuan')
             ->with('data',$data);
+    }
+
+    public function data()
+    {
+        $data=Satuan::all();
+        return DataTables::of($data)
+            ->addIndexColumn()
+            ->make(true);
     }
 
     /**

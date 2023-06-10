@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Pemasok;
 use App\Models\Riwayat;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class PemasokController extends Controller
 {
@@ -14,20 +15,17 @@ class PemasokController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        if ($request->has('search')){
-            $data=Pemasok::where('kode','like',"%{$request->search}%")
-                ->orWhere('nama','like',"%{$request->search}%")
-                ->orWhere('alamat','like',"%{$request->search}%")
-                ->orWhere('no_tlp','like',"%{$request->search}%")
-                ->paginate(5);
-            return view('pemasok.pemasok')
-                ->with('data',$data);
-        }
-        $data=Pemasok::paginate(5);
-        return view('pemasok.pemasok')
-            ->with('data',$data);
+        return view('pemasok.pemasok');
+    }
+
+    public function data()
+    {
+        $data=Pemasok::all();
+        return DataTables::of($data)
+            ->addIndexColumn()
+            ->make(true);
     }
 
     /**

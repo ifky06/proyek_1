@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Riwayat;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
 {
@@ -18,19 +19,19 @@ class UserController extends Controller
      */
     public function index()
     {
+        return view ('user.user');
+    }
+
+    public function data()
+    {
         $role = ['Owner', 'Admin', 'Kasir'];
-        if (auth()->user()->role == 0) {
-            $data = User::paginate(5);
-        } else {
-            $data = User::where('role', 2)->paginate(5);
-        }
+        $data=User::all();
         foreach ($data as $key => $value) {
             $data [$key]->rolename = $role [$value->role];
         }
-
-        return view ('user.user')->with([
-            'data' => $data
-        ]);
+        return DataTables::of($data)
+            ->addIndexColumn()
+            ->make(true);
     }
 
     /**
