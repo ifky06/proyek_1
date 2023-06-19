@@ -16,7 +16,7 @@
             {{--            </div>--}}
             <div class="info">
                 {{--          <a href="#" class="d-block">{{Auth::user()->username}}</a>--}}
-                <a href="#" class="d-block">
+                <a href="{{url('user/profile')}}" class="d-block">
                     <i class="fas fa-user mx-1"></i>
                     {{Auth::user()->username}} <span style="font-weight: bold"> [
                     @if(Auth::user()->role == 0)
