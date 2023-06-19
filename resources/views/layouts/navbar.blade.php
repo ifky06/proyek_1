@@ -20,7 +20,7 @@
 {{--        <a href="{{route('logout')}}" class="nav-link">Logout</a>--}}
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a class="nav-link text-dark" href="{{ url('user/profile') }}">
+        <a class="nav-link text-dark" href="{{ url('profile') }}">
           Profil
       </a>
       </li>

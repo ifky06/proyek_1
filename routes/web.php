@@ -45,8 +45,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('export/riwayat', [RiwayatController::class, 'export']);
     });
 
-    Route::get('/user/profile', [UserController::class, 'show']);
-    Route::post('/user/profile', [UserController::class, 'self_update']);
+    Route::get('/profile', [UserController::class, 'show']);
+    Route::post('/profile', [UserController::class, 'self_update']);
 
     Route::get('/barang', [BarangController::class, 'index']);
     Route::post('/barang/data', [BarangController::class, 'data']);

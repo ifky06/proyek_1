@@ -19,6 +19,7 @@ class Owner
         if(auth()->user()->role == 0){
             return $next($request);
         }
-        return redirect()->back();
+        return redirect()->back()
+            ->with('accessDenied','Anda tidak memiliki akses');
     }
 }
