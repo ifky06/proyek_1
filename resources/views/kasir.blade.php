@@ -8,7 +8,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Transaksi Keluar</h1>
+                    <h1>Penjualan</h1>
                 </div>
                 {{--                <div class="col-sm-6">--}}
                 {{--                    <ol class="breadcrumb float-sm-right">--}}
@@ -37,9 +37,6 @@
                                value="0">
                         <div class="input-group-append">
                             <button id="add" class="btn btn-primary">Add</button>
-                            <button id="payingForm" class="btn btn-success" data-toggle="modal"
-                                    data-target="#exampleModal">Pay
-                            </button>
                         </div>
                     </div>
                     <div class="input-group text-right">
@@ -61,6 +58,12 @@
 
                     </tbody>
                 </table>
+                
+                <div class="input-group-append">
+                    <button id="payingForm" class="btn btn-success" data-toggle="modal"
+                            data-target="#exampleModal" style="left: 95%">Pay
+                    </button>
+                </div>
             </div>
         </div>
 

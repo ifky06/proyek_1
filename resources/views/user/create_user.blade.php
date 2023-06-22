@@ -66,7 +66,12 @@
                             <option value="2" @isset($data) @selected($data->role == '2') @endisset>Kasir</option>
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <div class="form-group mt-5">
+                        <button type="submit" class="btn btn-primary btn-md">Submit</button>
+                        <a class="btn btn-primary btn-md" href="{{ url('/user') }}">Back</a>
+                    </div>
+                                      
+
                 </form>
 
             </div>

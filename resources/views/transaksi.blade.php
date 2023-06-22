@@ -8,7 +8,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Transaksi Masuk</h1>
+                    <h1>Pembelian</h1>
                 </div>
                 {{--                <div class="col-sm-6">--}}
                 {{--                    <ol class="breadcrumb float-sm-right">--}}
@@ -37,7 +37,6 @@
                                value="0">
                         <div class="input-group-append">
                             <button id="add" class="btn btn-primary">Add</button>
-                            <button type="button" id="input" class="btn btn-success">Input Data</button>
                         </div>
                     </div>
                 </div>
@@ -54,6 +53,9 @@
 
                     </tbody>
                 </table>
+                <div class="input-group-append">
+                    <button type="button" id="input" class="btn btn-success">Input Data</button>
+                </div>
             </div>
         </div>
 

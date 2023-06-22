@@ -8,7 +8,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Detail Laporan Transaksi Keluar</h1>
+                    <h1>Detail Laporan Penjualan</h1>
                 </div>
 {{--                <div class="col-sm-6">--}}
 {{--                    <ol class="breadcrumb float-sm-right">--}}
@@ -26,7 +26,7 @@
         <!-- Default box -->
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Detail Laporan Transaksi Keluar</h3>
+                <h3 class="card-title">Detail Laporan Penjualan</h3>
             </div>
             <div class="card-body">
                 {{-- <a href="{{url('export/transaksikeluar')}}" class="btn btn-sm btn-success my-2">Export Transaksi Keluar</a>
@@ -42,7 +42,7 @@
                 </form>
 
                 <p><span class="font-weight-bold"><b>Tanggal : </b>{{$tk->created_at}}</span><br>
-                <span class="font-weight-bold"><b>ID Transaksi : </b>{{$tk->id}}</span><br>
+                <span class="font-weight-bold"><b>ID Penjualan : </b>{{$tk->id}}</span><br>
                 <span class="font-weight-bold"><b>User : </b>{{$tk->user->username}}</span></p>
 
                 <table id="example1" class="table table-bordered table-striped">
@@ -59,6 +59,7 @@
                         {{-- <th>User</th> --}}
                     </tr>
                     </thead>
+                        
                     <tbody>
                     @if ($detail->count()>0)
                     @foreach($detail as $row)
@@ -79,6 +80,9 @@
                     @endif
                 </table>
                 {{-- {{ $detail->links() }} --}}
+                <div class="form-group mt-2">
+                    <a class="btn btn-primary btn-md" href="{{ url('/laporankeluar') }}">Back</a>
+                </div>
             </div>
         </div>
         <!-- /.card -->

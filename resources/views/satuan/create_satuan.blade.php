@@ -35,7 +35,10 @@
                         <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <div class="form-group mt-5">
+                        <button type="submit" class="btn btn-primary btn-md">Submit</button>
+                        <a class="btn btn-primary btn-md" href="{{ url('/satuan') }}">Back</a>
+                    </div>
                 </form>
 
             </div>

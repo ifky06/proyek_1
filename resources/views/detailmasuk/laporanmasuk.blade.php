@@ -8,7 +8,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Laporan Transaksi Masuk</h1>
+                    <h1>Laporan Pembelian</h1>
                 </div>
 {{--                <div class="col-sm-6">--}}
 {{--                    <ol class="breadcrumb float-sm-right">--}}
@@ -36,7 +36,7 @@
                         <form id="exportForm" method="post" action=""
                               enctype="multipart/form-data">
                             @csrf
-                            <label>Tanggal Transaksi</label>
+                            <label>Tanggal Pembelian</label>
                             <div class="form-row">
                                 <div class="form-group col">
                                     <input type="date" class="form-control" name="start" id="exportDateStart">
@@ -61,11 +61,11 @@
         <!-- Default box -->
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Laporan Transaksi Masuk</h3>
+                <h3 class="card-title">Laporan Pembelian</h3>
             </div>
             <div class="card-body">
-                <a href="#" id="exportTransaction" class="btn btn-sm btn-success my-2" data-toggle="modal" data-target="#export">Export Transaksi Masuk</a>
-                <a href="#" id="exportDetail" class="btn btn-sm btn-success my-2" data-toggle="modal" data-target="#export">Export Detail Transaksi Masuk</a>
+                <a href="#" id="exportTransaction" class="btn btn-sm btn-success my-2" data-toggle="modal" data-target="#export">Export Pembelian</a>
+                <a href="#" id="exportDetail" class="btn btn-sm btn-success my-2" data-toggle="modal" data-target="#export">Export Detail Pembelian</a>
                 <div class="row pt-1">
                     <p class="px-3">Filter:</p>
                     <input type="date" class="form-control form-control-sm w-25 mr-1" name="start" id="dateStart">
@@ -101,12 +101,12 @@
     <script>
         $(document).ready(function (){
             $('#exportTransaction').click(function (){
-                $('#exampleModalLabel').text('Export Transaksi Masuk')
+                $('#exampleModalLabel').text('Export Pembelian')
                 $('#exportForm').attr('action', '{{url('export/transaksimasuk')}}')
                 $('#exportAll').attr('href', '{{url('export/transaksimasuk')}}')
             })
             $('#exportDetail').click(function (){
-                $('#exampleModalLabel').text('Export Detail Transaksi Masuk')
+                $('#exampleModalLabel').text('Export Detail Pembelian')
                 $('#exportForm').attr('action', '{{url('export/detailtransaksimasuk')}}')
                 $('#exportAll').attr('href', '{{url('export/detailtransaksimasuk')}}')
             })

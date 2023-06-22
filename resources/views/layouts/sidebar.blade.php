@@ -95,7 +95,7 @@
                             <a href="{{ url('/kasir') }}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>
-                                    Transaksi Keluar
+                                    Penjualan
                                 </p>
                             </a>
                         </li>
@@ -103,7 +103,7 @@
                             <a href="{{ url('/transaksimasuk') }}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>
-                                    Transaksi Masuk
+                                    Pembelian
                                 </p>
                             </a>
                         </li>
@@ -122,7 +122,7 @@
                             <a href="{{ url('/laporankeluar') }}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>
-                                    Laporan Transaksi Keluar
+                                    Laporan Penjualan
                                 </p>
                             </a>
                         </li>
@@ -130,7 +130,7 @@
                             <a href="{{ url('/laporanmasuk') }}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>
-                                    Laporan Transaksi Masuk
+                                    Laporan Pembelian
                                 </p>
                             </a>
                         </li>

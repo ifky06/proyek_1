@@ -8,7 +8,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Laporan Transaksi Keluar</h1>
+                    <h1>Laporan Penjualan</h1>
                 </div>
 {{--                <div class="col-sm-6">--}}
 {{--                    <ol class="breadcrumb float-sm-right">--}}
@@ -36,7 +36,7 @@
                         <form id="exportForm" method="post" action=""
                               enctype="multipart/form-data">
                             @csrf
-                            <label>Tanggal Transaksi</label>
+                            <label>Tanggal Penjualan</label>
                             <div class="form-row">
                                 <div class="form-group col">
                                     <input type="date" class="form-control" name="start" id="exportDateStart">
@@ -61,11 +61,11 @@
         <!-- Default box -->
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Laporan Transaksi Keluar</h3>
+                <h3 class="card-title">Laporan Penjualan</h3>
             </div>
             <div class="card-body">
-                <a href="#" id="exportTransaction" class="btn btn-sm btn-success my-2" data-toggle="modal" data-target="#export">Export Transaksi Keluar</a>
-                <a href="#" id="exportDetail" class="btn btn-sm btn-success my-2" data-toggle="modal" data-target="#export">Export Detail Transaksi Keluar</a>
+                <a href="#" id="exportTransaction" class="btn btn-sm btn-success my-2" data-toggle="modal" data-target="#export">Export Penjualan</a>
+                <a href="#" id="exportDetail" class="btn btn-sm btn-success my-2" data-toggle="modal" data-target="#export">Export Detail Penjualan</a>
                 <div class="row pt-1">
                     <p class="px-3">Filter:</p>
                     <input type="date" class="form-control form-control-sm w-25 mr-1" name="start" id="dateStart">
@@ -104,12 +104,12 @@
         <script>
             $(document).ready(function (){
                 $('#exportTransaction').click(function (){
-                    $('#exampleModalLabel').text('Export Transaksi Keluar')
+                    $('#exampleModalLabel').text('Export Penjualan')
                     $('#exportForm').attr('action', '{{url('export/transaksikeluar')}}')
                     $('#exportAll').attr('href', '{{url('export/transaksikeluar')}}')
                 })
                 $('#exportDetail').click(function (){
-                    $('#exampleModalLabel').text('Export Detail Transaksi Keluar')
+                    $('#exampleModalLabel').text('Export Detail Penjualan')
                     $('#exportForm').attr('action', '{{url('export/detailtransaksikeluar')}}')
                     $('#exportAll').attr('href', '{{url('export/detailtransaksikeluar')}}')
                 })

@@ -30,7 +30,7 @@
                         <form id="exportForm" method="post" action="{{url('export/riwayat')}}"
                               enctype="multipart/form-data">
                             @csrf
-                            <label>Tanggal Transaksi</label>
+                            <label>Tanggal Riwayat</label>
                             <div class="form-row">
                                 <div class="form-group col">
                                     <input type="date" class="form-control" name="start" id="exportDateStart">

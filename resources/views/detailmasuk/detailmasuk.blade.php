@@ -8,7 +8,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Detail Laporan Transaksi Masuk</h1>
+                    <h1>Detail Laporan Pembelian</h1>
                 </div>
 {{--                <div class="col-sm-6">--}}
 {{--                    <ol class="breadcrumb float-sm-right">--}}
@@ -26,7 +26,7 @@
         <!-- Default box -->
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Detail Laporan Transaksi Masuk</h3>
+                <h3 class="card-title">Detail Laporan Pembelian</h3>
             </div>
             <div class="card-body">
                 {{-- <a href="{{url('export/transaksimasuk')}}" class="btn btn-sm btn-success my-2">Export Transaksi Masuk</a>
@@ -42,7 +42,7 @@
                 </form>
 
                 <p><span class="font-weight-bold"><b>Tanggal : </b>{{$tm->created_at}}</span><br>
-                    <span class="font-weight-bold"><b>ID Transaksi : </b>{{$tm->id}}</span><br>
+                    <span class="font-weight-bold"><b>ID Pembelian : </b>{{$tm->id}}</span><br>
                     <span class="font-weight-bold"><b>User : </b>{{$tm->user->username}}</span></p>
 
                 <table id="example1" class="table table-bordered table-striped">
@@ -79,6 +79,9 @@
                     @endif
                 </table>
                 {{-- {{ $data->links() }} --}}
+                <div class="form-group mt-2">
+                    <a class="btn btn-primary btn-md" href="{{ url('/laporanmasuk') }}">Back</a>
+                </div>
             </div>
         </div>
         <!-- /.card -->
