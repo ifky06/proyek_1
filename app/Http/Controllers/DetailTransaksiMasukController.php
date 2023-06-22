@@ -9,6 +9,7 @@ use App\Models\TransaksiMasuk;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class DetailTransaksiMasukController extends Controller
 {
@@ -124,5 +125,30 @@ class DetailTransaksiMasukController extends Controller
     public function destroy(DetailTransaksiMasuk $detailTransaksiMasuk)
     {
         //
+    }
+
+    public function pdf(Request $request)
+    {
+        $start = $request->start;
+        $end = $request->end;
+        if ($start != 0 && $end != 0){
+            $end = date('Y-m-d', strtotime($end . ' +1 day'));
+            $dtmasuk = DetailTransaksiMasuk::with('barang','transaksiMasuk','transaksiMasuk.user')
+                ->selectRaw('tanggal,id_transaksi,id_barang,qty')
+                ->whereBetween('created_at', [$start, $end])
+                ->get();
+            }else{
+                $dtmasuk = DetailTransaksiMasuk::with('barang','transaksiMasuk','transaksiMasuk.user')
+                ->selectRaw('tanggal,id_transaksi,id_barang,qty')
+                ->get();
+            }
+        foreach ($dtmasuk as $key => $value) {
+            $value->kode = $value->barang->kode;
+            $value->nama = $value->barang->nama;
+            $value['user'] = $value->transaksiMasuk->user->username;
+            unset($value->barang);
+        }
+        $pdf = Pdf::loadview('detailmasuk.pdfDetail',['dtmasuk'=>$dtmasuk]);
+        return $pdf->stream();
     }
 }
