@@ -8,6 +8,7 @@ use App\Models\Transaksi_Keluar;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class DetailTransaksiKeluarController extends Controller
 {
@@ -125,5 +126,30 @@ class DetailTransaksiKeluarController extends Controller
     public function destroy(Detail_transaksi_keluar $detail_transaksi_keluar)
     {
         //
+    }
+
+    public function pdf(Request $request)
+    {
+        $start = $request->start;
+        $end = $request->end;
+        if ($start != 0 && $end != 0){
+            $end = date('Y-m-d', strtotime($end . ' +1 day'));
+            $dtkeluar = Detail_transaksi_keluar::with('barang','transaksiKeluar','transaksiKeluar.user')
+                ->selectRaw('tanggal,id_transaksi,id_barang,qty,grandtotal')
+                ->whereBetween('created_at', [$start, $end])
+                ->get();
+            }else{
+                $dtkeluar = Detail_transaksi_keluar::with('barang','transaksiKeluar','transaksiKeluar.user')
+                ->selectRaw('tanggal,id_transaksi,id_barang,qty,grandtotal')
+                ->get();
+            }
+        foreach ($dtkeluar as $key => $value) {
+            $value->kode = $value->barang->kode;
+            $value->nama = $value->barang->nama;
+            $value['user'] = $value->transaksiKeluar->user->username;
+            unset($value->barang);
+        }
+        $pdf = Pdf::loadview('detailkeluar.pdfDetail',['dtkeluar'=>$dtkeluar]);
+        return $pdf->stream();
     }
 }

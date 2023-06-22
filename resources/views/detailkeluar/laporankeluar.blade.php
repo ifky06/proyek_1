@@ -64,6 +64,8 @@
                 <h3 class="card-title">Laporan Transaksi Keluar</h3>
             </div>
             <div class="card-body">
+                <a href="#" id="exportPdfTransaction" class="btn btn-sm btn-info my-2" data-toggle="modal" data-target="#export">Export PDF Transaksi Keluar</a>
+                <a href="#" id="exportPdfDetail" class="btn btn-sm btn-info my-2" data-toggle="modal" data-target="#export">Export PDF Detail Transaksi Keluar</a>
                 <a href="#" id="exportTransaction" class="btn btn-sm btn-success my-2" data-toggle="modal" data-target="#export">Export Transaksi Keluar</a>
                 <a href="#" id="exportDetail" class="btn btn-sm btn-success my-2" data-toggle="modal" data-target="#export">Export Detail Transaksi Keluar</a>
                 <div class="row pt-1">
@@ -103,6 +105,16 @@
 
         <script>
             $(document).ready(function (){
+                $('#exportPdfTransaction').click(function (){
+                    $('#exampleModalLabel').text('Export PDF Transaksi Keluar')
+                    $('#exportForm').attr('action', '{{url('pdf/transaksikeluar')}}')
+                    $('#exportAll').attr('href', '{{url('pdf/transaksikeluar')}}')
+                })
+                $('#exportPdfDetail').click(function (){
+                    $('#exampleModalLabel').text('Export PDF Detail Transaksi Keluar')
+                    $('#exportForm').attr('action', '{{url('pdf/detailtransaksikeluar')}}')
+                    $('#exportAll').attr('href', '{{url('pdf/detailtransaksikeluar')}}')
+                })
                 $('#exportTransaction').click(function (){
                     $('#exampleModalLabel').text('Export Transaksi Keluar')
                     $('#exportForm').attr('action', '{{url('export/transaksikeluar')}}')

@@ -66,6 +66,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/laporankeluar/{id}/detaillaporankeluar', [DetailTransaksiKeluarController::class, 'detail']);
     Route::get('/laporanmasuk/{id}/detaillaporanmasuk', [DetailTransaksiMasukController::class, 'detail']);
 
+    Route::get('pdf/barang', [BarangController::class, 'pdf']);
     Route::get('export/barang', [BarangController::class, 'export']);
     Route::get('import/barang/template', [BarangController::class, 'template']);
     Route::get('export/detailtransaksikeluar', [DetailTransaksiKeluarController::class, 'exportAll']);
@@ -76,6 +77,15 @@ Route::middleware(['auth'])->group(function () {
     Route::post('export/detailtransaksimasuk', [DetailTransaksiMasukController::class, 'export']);
     Route::get('export/transaksimasuk', [TransaksiMasukController::class, 'exportAll']);
     Route::post('export/transaksimasuk', [TransaksiMasukController::class, 'export']);
+    
+    Route::post('pdf/transaksikeluar', [TransaksiKeluarController::class, 'pdf']);
+    Route::get('pdf/transaksikeluar', [TransaksiKeluarController::class, 'pdf']);
+    Route::post('pdf/detailtransaksikeluar', [DetailTransaksiKeluarController::class, 'pdf']);
+    Route::get('pdf/detailtransaksikeluar', [DetailTransaksiKeluarController::class, 'pdf']);
+    Route::post('pdf/transaksimasuk', [TransaksiMasukController::class, 'pdf']);
+    Route::get('pdf/transaksimasuk', [TransaksiMasukController::class, 'pdf']);
+    Route::post('pdf/detailtransaksimasuk', [DetailTransaksiMasukController::class, 'pdf']);
+    Route::get('pdf/detailtransaksimasuk', [DetailTransaksiMasukController::class, 'pdf']);
 });
 
 //Route::get('/testlogin', function () {
