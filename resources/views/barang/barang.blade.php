@@ -63,7 +63,8 @@
                     <a href="{{url('barang/create')}}" class="btn btn-sm btn-success my-2">Tambah Data</a>
                 @endif
                 <a href="{{url('satuan')}}" class="btn btn-sm btn-info my-2">Data Satuan</a>
-                <a href="{{url('export/barang')}}" class="btn btn-sm btn-success my-2">Export Excel</a>
+                <a href="{{url('pdf/barang')}}" class="btn btn-sm btn-success my-2">Export PDF</a>
+                <a href="{{url('export/barang')}}" class="btn btn-sm btn-info my-2">Export Excel</a>
                 @if(Auth::user()->role != 2)
                     <a href="#" class="btn btn-sm btn-warning my-2" data-toggle="modal" data-target="#exampleModal">Import
                         Excel</a>

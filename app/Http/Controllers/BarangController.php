@@ -10,9 +10,12 @@ use App\Models\Pemasok;
 use App\Models\Riwayat;
 use App\Models\Satuan;
 use App\Exports\BarangExport;
+use App\Models\Detail_transaksi_keluar;
+use App\Models\DetailTransaksiMasuk;
 use \Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class BarangController extends Controller
 {
@@ -158,8 +161,15 @@ class BarangController extends Controller
      * @param  \App\Models\Barang  $barang
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Barang $barang)
+    public function destroy(Request $request, $id)
     {
+        $barang = Barang::where('id',$id)->first();
+
+        // Cek apakah data telah digunakan dalam tabel lain
+        if ($this->isDataUsed($id)) {
+            return redirect('barang')
+                ->with('error', 'Data digunakan di tabel lain');
+        }
 
         $barang->delete();
 
@@ -167,6 +177,17 @@ class BarangController extends Controller
 
         return redirect('barang')
             ->with('success', 'Data barang berhasil dihapus');
+    }
+    private function isDataUsed($id)
+    {
+        // Cek apakah data telah digunakan dalam tabel lain
+        $isUsed = Detail_transaksi_keluar::where('id_barang', $id)->first();
+        
+        if (!$isUsed){
+            $isUsed = DetailTransaksiMasuk::where('id_barang', $id)->first();
+        }
+
+        return $isUsed;
     }
 
     public function export()
@@ -191,5 +212,12 @@ class BarangController extends Controller
     public function template()
     {
         return Excel::download(new TemplateExport, 'template_barang.xlsx');
+    }
+
+    public function pdf()
+    {
+        $barang = Barang::all();
+        $pdf = Pdf::loadview('barang.pdf',['barang'=>$barang]);
+        return $pdf->stream();
     }
 }

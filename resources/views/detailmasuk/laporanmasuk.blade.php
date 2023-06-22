@@ -64,8 +64,15 @@
                 <h3 class="card-title">Laporan Pembelian</h3>
             </div>
             <div class="card-body">
+<<<<<<< HEAD
                 <a href="#" id="exportTransaction" class="btn btn-sm btn-success my-2" data-toggle="modal" data-target="#export">Export Pembelian</a>
                 <a href="#" id="exportDetail" class="btn btn-sm btn-success my-2" data-toggle="modal" data-target="#export">Export Detail Pembelian</a>
+=======
+                <a href="#" id="exportPdfTransaction" class="btn btn-sm btn-info my-2" data-toggle="modal" data-target="#export">Export PDF Transaksi Masuk</a>
+                <a href="#" id="exportPdfDetail" class="btn btn-sm btn-info my-2" data-toggle="modal" data-target="#export">Export PDF Detail Transaksi Masuk</a>
+                <a href="#" id="exportTransaction" class="btn btn-sm btn-success my-2" data-toggle="modal" data-target="#export">Export Transaksi Masuk</a>
+                <a href="#" id="exportDetail" class="btn btn-sm btn-success my-2" data-toggle="modal" data-target="#export">Export Detail Transaksi Masuk</a>
+>>>>>>> 0446e34c2a18c9890a798f033b69b9a8a69bd45d
                 <div class="row pt-1">
                     <p class="px-3">Filter:</p>
                     <input type="date" class="form-control form-control-sm w-25 mr-1" name="start" id="dateStart">
@@ -100,6 +107,16 @@
 
     <script>
         $(document).ready(function (){
+            $('#exportPdfTransaction').click(function (){
+                $('#exampleModalLabel').text('Export PDF Transaksi Masuk')
+                $('#exportForm').attr('action', '{{url('pdf/transaksimasuk')}}')
+                $('#exportAll').attr('href', '{{url('pdf/transaksimasuk')}}')
+            })
+            $('#exportPdfDetail').click(function (){
+                $('#exampleModalLabel').text('Export PDF Detail Transaksi Masuk')
+                $('#exportForm').attr('action', '{{url('pdf/detailtransaksimasuk')}}')
+                $('#exportAll').attr('href', '{{url('pdf/detailtransaksimasuk')}}')
+            })
             $('#exportTransaction').click(function (){
                 $('#exampleModalLabel').text('Export Pembelian')
                 $('#exportForm').attr('action', '{{url('export/transaksimasuk')}}')

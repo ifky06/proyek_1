@@ -56,7 +56,7 @@ class UserController extends Controller
         $request->validate([
             'username'=>'required|unique:users',
             'name'=>'required',
-            'email'=>'required',
+            'email'=>'required|unique:users',
             'password'=>'required|min:8',
             'role'=>'required',
         ]);
@@ -75,9 +75,13 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
-        //
+        $role = ['Owner', 'Admin', 'Kasir'];
+        $data = auth()->user();
+        $data['rolename']= $role [$data->role];
+        return view('user.user_profile')
+                ->with('data',$data);
     }
 
     /**
@@ -105,7 +109,7 @@ class UserController extends Controller
         $request->validate([
             'username'=>'required|unique:users,username,'.$user->id,
             'name'=>'required',
-            'email'=>'required',
+            'email'=>'required|unique:users,email,'.$user->id,
             'password'=>'max:8',
             'role'=>'required',
         ]);
@@ -123,6 +127,32 @@ class UserController extends Controller
         $user->update($request->all());
         Riwayat::add('update', $this->location, $user->username);
         return redirect('user')
+            ->with('success', 'User berhasil diubah');
+    }
+
+    public function self_update(Request $request)
+    {
+        $request->validate([
+            'username'=>'required|unique:users,username,'.auth()->user()->id,
+            'name'=>'required',
+            'email'=>'required|unique:users,email,'.auth()->user()->id,
+            'password'=>'max:8',
+        ]);
+
+        if ($request->password) {
+            $request->merge([
+                'password'=>Hash::make($request->password)
+            ]);
+        } else {
+            $request->merge([
+                'password'=>auth()->user()->password
+            ]);
+        }
+        
+        $data = User::find(auth()->user()->id);
+        $data->update($request->all());
+        Riwayat::add('update', $this->location, auth()->user()->username);
+        return redirect('user/profile')
             ->with('success', 'User berhasil diubah');
     }
 
