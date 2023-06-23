@@ -41,7 +41,7 @@
           <!-- /.card -->
 
           <!-- About Me Box -->
-          
+
           <!-- /.card -->
         </div>
         <!-- /.col -->
@@ -51,7 +51,7 @@
                 <h4 class="pt-2 pl-2">Edit Profil</h4>
             </div><!-- /.card-header -->
             <div class="card-body">
-                <form id="editProfil" action="{{url('user/profile')}}" method="post">
+                <form id="editProfil" action="{{url('profile')}}" method="post">
                     @csrf
                     <div class="form-group">
                         <label for="username">Username</label>
