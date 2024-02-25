@@ -12,6 +12,7 @@ use App\Models\Satuan;
 use App\Exports\BarangExport;
 use App\Models\Detail_transaksi_keluar;
 use App\Models\DetailTransaksiMasuk;
+use Illuminate\Support\Facades\Storage;
 use \Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
@@ -90,10 +91,26 @@ class BarangController extends Controller
                 'harga'=>'required|numeric',
                 'stok'=>'required|numeric',
         ]);
+
+        $gambar = $request->gambar;
         $request->merge([
             'kode'=>Barang::generateKode($request->nama)
         ]);
-        Barang::create($request->all());
+
+        if ($gambar) {
+            $image_name= $gambar->store('gambar_barang','public');
+        }
+
+        Barang::create([
+            'kode'=>$request->kode,
+            'id_kategori'=>$request->id_kategori,
+            'id_pemasok'=>$request->id_pemasok,
+            'id_satuan'=>$request->id_satuan,
+            'nama'=>$request->nama,
+            'harga'=>$request->harga,
+            'stok'=>$request->stok,
+            'gambar'=>$image_name ?? null
+        ]);
 
         Riwayat::add('store', $this->location, $request->kode);
 
@@ -147,7 +164,25 @@ class BarangController extends Controller
             'stok' => 'required|numeric',
         ]);
 
-        $barang->update($request->all());
+        $gambar = $request->gambar;
+
+        if ($gambar) {
+            if($barang->gambar && file_exists(storage_path('app/public/'.$barang->gambar))){
+                Storage::delete('public/'.$barang->gambar);
+            }
+            $image_name= $gambar->store('gambar_barang','public');
+            $barang->gambar = $image_name;
+        }
+
+        $barang->update([
+            'id_kategori' => $request->id_kategori,
+            'id_pemasok' => $request->id_pemasok,
+            'id_satuan' => $request->id_satuan,
+            'nama' => $request->nama,
+            'harga' => $request->harga,
+            'stok' => $request->stok,
+            'gambar' => $barang->gambar
+        ]);
 
         Riwayat::add('edit', $this->location, $barang->kode);
 
@@ -171,6 +206,10 @@ class BarangController extends Controller
                 ->with('error', 'Data digunakan di tabel lain');
         }
 
+        if($barang->gambar && file_exists(storage_path('app/public/'.$barang->gambar))){
+            Storage::delete('public/'.$barang->gambar);
+        }
+
         $barang->delete();
 
         Riwayat::add('delete', $this->location, $barang->kode);
@@ -182,7 +221,7 @@ class BarangController extends Controller
     {
         // Cek apakah data telah digunakan dalam tabel lain
         $isUsed = Detail_transaksi_keluar::where('id_barang', $id)->first();
-        
+
         if (!$isUsed){
             $isUsed = DetailTransaksiMasuk::where('id_barang', $id)->first();
         }

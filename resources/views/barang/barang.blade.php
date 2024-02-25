@@ -96,6 +96,7 @@
                         <th>Satuan</th>
                         <th>Harga</th>
                         <th>Stok</th>
+                        <th>Gambar</th>
                         @if(Auth::user()->role != 2)
                             <th style="width: 13%">Action</th>
                         @endif
@@ -142,6 +143,8 @@
                         },
                     },
                     {data: 'stok', name: 'stok', searchable: false},
+                    {data: 'gambar', name: 'gambar', orderable: false, searchable: false, render: function (data) {
+                            return '<img src="{{asset('storage/')}}/' + data + '" alt="' + data + '" width="150">';}},
                         @if(Auth::user()->role != 2)
                     {
                         data: 'id', name: 'id', orderable: false, searchable: false,

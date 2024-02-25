@@ -27,7 +27,7 @@
         <div class="card">
             <div class="card-body">
 
-                <form action="{{$url_form}}" method="post">
+                <form action="{{$url_form}}" method="post" enctype="multipart/form-data">
                     @csrf
                     {!! (isset($data))? method_field('PUT'):'' !!}
                     <div class="form-group">
@@ -72,6 +72,16 @@
                         <label for="stok">Stok</label>
                         <input type="number" name="stok" id="stok" class="form-control" value="{{isset($data)?$data->stok:old('stok')}}">
                         @error('stok')
+                        <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="foto">Foto</label> <br>
+                        @isset($data)
+                            <img src="{{asset('storage/'.$data->gambar)}}" alt="{{$data->nama}}" width="150">
+                        @endisset
+                        <input type="file" name="gambar" id="gambar" class="form-control" value="{{old('gambar')}}">
+                        @error('gambar')
                         <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
