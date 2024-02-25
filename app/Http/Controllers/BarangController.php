@@ -12,6 +12,7 @@ use App\Models\Satuan;
 use App\Exports\BarangExport;
 use App\Models\Detail_transaksi_keluar;
 use App\Models\DetailTransaksiMasuk;
+use App\Repositories\BarangRepository;
 use Illuminate\Support\Facades\Storage;
 use \Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
@@ -21,6 +22,11 @@ use Barryvdh\DomPDF\Facade\Pdf;
 class BarangController extends Controller
 {
     protected string $location = 'barang';
+
+    public function __construct(protected BarangRepository $barangRepository)
+    {
+
+    }
     /**
      * Display a listing of the resource.
      *
@@ -39,7 +45,8 @@ class BarangController extends Controller
 
     public function data()
     {
-        $data=Barang::all();
+//        $data=Barang::all();
+        $data = $this->barangRepository->getAll(new Barang());
         foreach ($data as $key => $value) {
             $value->id_kategori = $value->kategori->nama;
             $value->id_pemasok = $value->pemasok->nama;
@@ -92,25 +99,7 @@ class BarangController extends Controller
                 'stok'=>'required|numeric',
         ]);
 
-        $gambar = $request->gambar;
-        $request->merge([
-            'kode'=>Barang::generateKode($request->nama)
-        ]);
-
-        if ($gambar) {
-            $image_name= $gambar->store('gambar_barang','public');
-        }
-
-        Barang::create([
-            'kode'=>$request->kode,
-            'id_kategori'=>$request->id_kategori,
-            'id_pemasok'=>$request->id_pemasok,
-            'id_satuan'=>$request->id_satuan,
-            'nama'=>$request->nama,
-            'harga'=>$request->harga,
-            'stok'=>$request->stok,
-            'gambar'=>$image_name ?? null
-        ]);
+        $this->barangRepository->store($request);
 
         Riwayat::add('store', $this->location, $request->kode);
 
@@ -164,25 +153,7 @@ class BarangController extends Controller
             'stok' => 'required|numeric',
         ]);
 
-        $gambar = $request->gambar;
-
-        if ($gambar) {
-            if($barang->gambar && file_exists(storage_path('app/public/'.$barang->gambar))){
-                Storage::delete('public/'.$barang->gambar);
-            }
-            $image_name= $gambar->store('gambar_barang','public');
-            $barang->gambar = $image_name;
-        }
-
-        $barang->update([
-            'id_kategori' => $request->id_kategori,
-            'id_pemasok' => $request->id_pemasok,
-            'id_satuan' => $request->id_satuan,
-            'nama' => $request->nama,
-            'harga' => $request->harga,
-            'stok' => $request->stok,
-            'gambar' => $barang->gambar
-        ]);
+        $this->barangRepository->update($request, $barang);
 
         Riwayat::add('edit', $this->location, $barang->kode);
 
@@ -206,11 +177,7 @@ class BarangController extends Controller
                 ->with('error', 'Data digunakan di tabel lain');
         }
 
-        if($barang->gambar && file_exists(storage_path('app/public/'.$barang->gambar))){
-            Storage::delete('public/'.$barang->gambar);
-        }
-
-        $barang->delete();
+        $this->barangRepository->destroy($barang);
 
         Riwayat::add('delete', $this->location, $barang->kode);
 
